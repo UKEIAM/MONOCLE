@@ -30,6 +30,6 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-mtbpassword}
       - POSTGRES_DB=${POSTGRES_DB:-mtb}
     ports:
-      - "5411:5432"
+      - "5432:5432"
 volumes:
   mtb-postgres-data:

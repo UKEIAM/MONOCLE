@@ -15,5 +15,5 @@ This is the GUI for the MONOCLE project.
 ## Installation
 
 #### Environment Variables
-
-Please copy the file [config.js.example](./public/config.js.example) to `public/config.js`.
+If you want to run the GUI without docker,
+please copy the file [config.js.example](./../config.js.example) to `public/config.js`.
