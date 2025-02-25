@@ -1,0 +1,34 @@
+{
+  "id" : "1",
+  "steps" : [ {
+    "id" : "0",
+    "name" : "Klinische Daten",
+    "skippable" : false,
+    "status" : null,
+    "steps" : null
+  }, {
+    "id" : "1",
+    "name" : "Anforderung",
+    "skippable" : false,
+    "status" : null,
+    "steps" : null
+  }, {
+    "id" : "2",
+    "name" : "Genetische Daten",
+    "skippable" : false,
+    "status" : null,
+    "steps" : null
+  }, {
+    "id" : "3",
+    "name" : "MTB-Beschluss und MTB-Report",
+    "skippable" : false,
+    "status" : null,
+    "steps": null
+  }, {
+    "id" : "4",
+    "name" : "Übermittlung",
+    "skippable" : false,
+    "status" : null,
+    "steps": null
+  } ]
+}

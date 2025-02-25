@@ -1,0 +1,35 @@
+services:
+  mtb-control:
+    image: mtb-control:latest # development environment
+    container_name: mtb-control
+    volumes:
+      - C:\\Users\\admin\\MTB\\main:/app/mtb-data/main
+      - C:\\Users\\admin\\MTB\\unzip:/app/mtb-data/unzip
+      - C:\\Users\\admin\\MTB\\archive:/app/mtb-data/archive
+    ports:
+      - "8080:8080" # development environment
+    build: .
+    env_file:
+      - .env.docker.development
+    depends_on:
+      mtb-postgres:
+        condition: service_healthy
+
+  mtb-postgres:
+    image: postgres:16
+    container_name: mtb-postgres
+    volumes:
+      - mtb-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "mtb"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-mtb}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-mtbpassword}
+      - POSTGRES_DB=${POSTGRES_DB:-mtb}
+    ports:
+      - "5411:5432"
+volumes:
+  mtb-postgres-data:

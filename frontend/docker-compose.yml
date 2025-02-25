@@ -1,0 +1,9 @@
+services:
+  mtb-gui:
+    image: mtb-gui:latest # development environment
+    container_name: mtb-gui
+    volumes:
+      - .\\public\\config.js:/usr/share/nginx/html/config.js
+    build: .
+    ports:
+      - "3000:80"

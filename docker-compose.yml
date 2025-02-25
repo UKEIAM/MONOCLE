@@ -1,0 +1,66 @@
+services:
+  mtb-database:
+    image: postgres
+    container_name: mtb-database
+    volumes:
+      - mtb-postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init script
+      - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json  # Mount JSON file
+      - ./workflow.json:/docker-entrypoint-initdb.d/workflow.json  # Mount JSON file
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-mtb}" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-mtb}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-insertPassword}
+    ports:
+      - "5432:5432"
+
+  mtb-control:
+    build:
+      context: ./backend  # Build from the backend directory
+      dockerfile: Dockerfile
+    image: mtb-control:latest
+    container_name: mtb-control
+    volumes:
+      - /opt/mtb/main:/app/mtb-data/main
+      - /opt/mtb/target:/app/mtb-data/unzip
+      - /opt/mtb/archive:/app/mtb-data/archive
+      - /opt/mtb/reports:/app/mtb-data/reports
+    ports:
+      - "${CONTROL_PORT:-8080}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - default
+    depends_on:
+      mtb-database:
+        condition: service_healthy
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-insertPassword}
+    env_file:
+      - .env
+
+  mtb-gui:
+    build:
+      context: ./frontend  # Build from the frontend directory
+      dockerfile: Dockerfile
+    image: mtb-gui:latest
+    container_name: mtb-gui
+    volumes:
+      - ./config.js:/usr/share/nginx/html/config.js
+    ports:
+      - "${GUI_PORT:-3000}:80"
+
+networks:
+  default:
+    name: mtb-network
+
+volumes:
+  mtb-postgres-data:
+    name: mtb-postgres-data
+    external: false

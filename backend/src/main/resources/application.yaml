@@ -1,0 +1,52 @@
+server:
+  port: ${SERVER_PORT:8080}
+logging:
+  level:
+    root: INFO
+    org.apache.coyote.http11: INFO
+    org.springframework.web: INFO
+    de.uke.iam.mtb.control.security: ERROR
+    de.uke.iam.mtb.control.rest.TestController: DEBUG
+spring:
+  application:
+    name: MTB.Control
+    version: "@project.version@"
+  config:
+    import:
+      - optional:file:./.env.development[.properties]
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/mtb}
+    username: ${POSTGRES_USER:devroot}
+    password: ${POSTGRES_PASSWORD:devroot}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    # comment out the following line to enable the automatic schema validation but this should be done only for development and
+    # after running the migration scripts (firstly run the app without this to run the migration scripts)
+    #    hibernate:
+    #      ddl-auto: validate
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  task:
+    scheduling:
+      pool:
+        size: 10
+  flyway:
+    # true : If the Db is empty, then flyway will execute V1 script. Otherwise, execute V2 script.
+    baseline-on-migrate: true
+    out-of-order: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SSO_URL}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100GB
+      max-request-size: 100GB
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+    deserialization:
+      fail-on-unknown-properties: false
+
