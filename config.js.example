@@ -1,7 +1,6 @@
 window.config = {
   KEYCLOAK_AUTH_URL: "auth url with realm",
   KEYCLOAK_CLIENT_ID: "mtb-gui client id",
-  KEYCLOAK_CLIENT_SECRET: "mtb-gui  client secret",
   MTB_CONTROL_URL: "mtb-control base api url",
   KC_URL: "knowledge connector url",
   BWHC_URL: "bwhc url",

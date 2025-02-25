@@ -7,14 +7,9 @@ import reportWebVitals from "reportWebVitals"
 import { BrowserRouter } from "react-router-dom"
 import { AuthProvider, AuthProviderProps } from "react-oidc-context"
 
-// TODO mtb-gui is a public client and should either:
-//    use diffrent clientId+secret then mtb-backend or
-//    use diffrent form of authentication
-//    For more info see https://www.oauth.com/oauth2-servers/single-page-apps/
 export const oidcConfig: AuthProviderProps = {
   authority: window.config.KEYCLOAK_AUTH_URL!,
   client_id: window.config.KEYCLOAK_CLIENT_ID!,
-  client_secret: window.config.KEYCLOAK_CLIENT_SECRET!,
   accessTokenExpiringNotificationTimeInSeconds: 5,
   redirect_uri: window.location.origin,
   onSigninCallback: () => {
