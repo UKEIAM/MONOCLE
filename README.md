@@ -70,3 +70,14 @@ This is the GUI for the MONOCLE project.
 #### Environment Variables
 
 Please copy the file [config.js.example](./config.js.example) to `config.js`.
+
+# Docker
+If everything is set up, you can run the following command to start the services:
+
+```bash 
+docker-compose up
+```
+or to run it in the background:
+```bash 
+docker-compose up -d
+```
