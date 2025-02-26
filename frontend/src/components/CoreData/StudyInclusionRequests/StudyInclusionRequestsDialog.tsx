@@ -156,7 +156,6 @@ export function StudyInclusionRequestsDialog({
   }
 
   const getAvailableVariantsOptions = () => {
-    // TODO : check if we can optimize this
     return supportingVariantsOptions
       .filter((entry) => selectedNgsReports?.includes(entry.id))
       .flatMap((elem) => elem.values)
@@ -185,7 +184,6 @@ export function StudyInclusionRequestsDialog({
                     isRequired={true}
                   ></Select>
                 </Grid>
-                {/* TODO: delete the following lines */}
                 {/* <Grid item xs={12}>
                   <TextField
                     name={"nctNumber"}

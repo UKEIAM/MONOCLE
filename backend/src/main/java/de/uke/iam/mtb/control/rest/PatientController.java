@@ -39,7 +39,6 @@ public class PatientController implements PatientApi {
         this.auditTrailService = auditTrailService;
     }
 
-    // FIXME this endpoint exposes quite a lot of patient data and can be accessed by both doctors and pathologists, consider making dedicated endpoints
     @Override
     @Secured({"ROLE_MTBDOCTOR", "ROLE_MTBPATHOLOGIST"})
     @Operation(

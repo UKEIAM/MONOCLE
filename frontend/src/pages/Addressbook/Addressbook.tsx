@@ -74,7 +74,6 @@ export default function Addressbook() {
             </Button>
           </Grid>
         </Grid>
-        {/* TODO this could be spilt into some sort of a dedicated Card Component */}
         {addressbook?.map((addressbookEntry: AddressbookEntry) => (
           <Grid item xs={3}>
             <Card>

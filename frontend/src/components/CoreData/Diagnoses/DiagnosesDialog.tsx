@@ -115,7 +115,6 @@ export function DiagnosesDialog({ open, onClose, editElement, histologyReportMap
   }, [editElement, episodeId, methods, open])
 
   const handleSubmit = (formData: Diagnose) => {
-    // TODO : check what will be saved if we did not set a value null or ""
     // delete all unnecessary elements if values are empty, so bwhc has no error message
     if (formData.whoGrade?.code === "") delete formData.whoGrade
     if (formData.recordedOn === "") delete formData.recordedOn
@@ -162,7 +161,6 @@ export function DiagnosesDialog({ open, onClose, editElement, histologyReportMap
     <Dialog
       disableEnforceFocus
       open={open}
-      // TODO : what is this for?
       onClose={(event, reason) => {
         if (reason && reason === "backdropClick") return
       }}
@@ -355,7 +353,7 @@ export function DiagnosesDialog({ open, onClose, editElement, histologyReportMap
                   })}
                 ></FormSelect>
               </Grid>
-              {/*TODO might be in the KDSv2 data in the future*/}
+              {/*TODO this might be in the KDSv2 data in the future*/}
               {/*<Grid container item xs={12} spacing={2}>*/}
               {/*  <Grid item xs={12}>*/}
               {/*    <Typography style={{ fontWeight: "bold" }}>*/}

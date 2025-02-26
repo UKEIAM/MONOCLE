@@ -158,14 +158,9 @@ public class BioInfoParser {
                     // Yes, Patho has set a E/N-Number and Labnumber combination (Specimen is already created!)
 
                     List<SpecimenDto> specimenDtoList = getSpecimenListFromDBByLabNumberFromFile(labNumberFromFileString);
-                    //TODO: Remove System when refactoring is done
-                    System.out.println(specimenDtoList); // Print all saved Specimen in DB with specific SpacimenLaben from LabNumber File Name
 
                     // is True, only when a Specimen with a lable combination was submit by patho
                     SpecimenDto specimenDto = specimenDtoList.get(0); //FIXME: What if multiple Specimen has the same Label!?
-                    //TODO: Remove System when refactoring is done
-                    System.out.println(specimenDto);
-                    // TODO set specimenId to msi, tmb, brcaness, hrd
 
                     //FIXME: What is when, a NGS-Report with this specimen already exsits?
                     if (!ngsReportService.isSpecimenAlreadyInNGSReport(specimenDto.getId())) {
@@ -178,7 +173,6 @@ public class BioInfoParser {
                         ngsReport.setEpisode(episode);
 
                         NgsReportDto ngsReportDto = ngsReportMapper.toDto(ngsReport);
-                        // TODO it should not be converted to DTO because in service it is converted back to entity and then saved.
                         NgsReportDto resultNGSReport = ngsReportService.addNgsReport(ngsReportDto);
                         logger.debug("Added NgsReport {}", resultNGSReport.getId());
 

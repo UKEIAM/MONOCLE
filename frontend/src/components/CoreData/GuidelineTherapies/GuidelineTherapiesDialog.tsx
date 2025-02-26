@@ -123,7 +123,6 @@ export function GuidelineTherapiesDialog({
                     validationRules={{ warning: true }}
                   />
                 </Grid>
-                {/*Todo : add ATC code to the component + refactor the component*/}
                 <MedicationComponent />
                 {/*TODO : wait until it is clear which code will be used in the following components*/}
                 {/*                <Grid container item xs={12} spacing={2}>

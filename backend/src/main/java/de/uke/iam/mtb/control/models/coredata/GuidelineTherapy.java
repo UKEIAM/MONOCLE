@@ -66,15 +66,11 @@ public class GuidelineTherapy {
   @Convert(converter = CodeConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private Code procedure;
-  //  TODO to be checked
   @Enumerated(EnumType.STRING)
   private MolecularTherapyProcedurePosition procedurePosition;
-  //  TODO to be checked
   @Enumerated(EnumType.STRING)
   private MolecularTherapyIntention intention;
-  //  TODO to be checked
   private LocalDate progressDate;
-  //  TODO to be checked
   @ManyToOne
   private MolecularTherapyResponse molecularTherapyResponse;
 

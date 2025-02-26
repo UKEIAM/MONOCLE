@@ -48,7 +48,7 @@ export default function PatientLabNumber() {
       patients?.map((patient) => {
         let dateOfBirth = dayjs(patient.dateOfBirth).format("DD.MM.YYYY")
         let patientValue = `${patient.surname}, ${patient.firstName} (${dateOfBirth})`
-        let episodeId = patient.episodes?.at(0)?.id ?? "" //TODO is this correct, is this the last one?
+        let episodeId = patient.episodes?.at(0)?.id ?? ""
         return {
           id: episodeId,
           label: patientValue,

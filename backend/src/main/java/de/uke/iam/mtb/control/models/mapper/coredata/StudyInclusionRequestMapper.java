@@ -13,7 +13,6 @@ import org.mapstruct.Named;
 @Mapper(componentModel = "spring")
 public interface StudyInclusionRequestMapper {
 
-  // TODO : check if the methods works as they should and if they are mandatory
   @Named("NgsReportsToStrings")
   static List<String> NgsReportsToStrings(List<NgsReport> ngsReports) {
     if (ngsReports == null) {

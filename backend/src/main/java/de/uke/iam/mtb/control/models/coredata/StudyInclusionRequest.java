@@ -51,11 +51,7 @@ public class StudyInclusionRequest {
     @JoinColumn(name = "episode_id", referencedColumnName = "id")
     private Episode episode;
     private LocalDate issuedOn;
-    // TODO: delete this comment if not needed
-    // private String nctNumber;
-    // private String eudraCTNumber;
-    // private String drksNumber;
-    // private String eudamedNumber;
+
     @ManyToOne
     private Diagnose diagnose;
 

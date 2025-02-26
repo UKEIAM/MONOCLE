@@ -54,7 +54,6 @@ public class CarePlan {
   @Convert(converter = NoTargetFindingConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private NoTargetFinding noTargetFinding;
-  // Todo: this object should be a replacement for noTargetFinding
   @Convert(converter = CodeConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private Code statusReason;

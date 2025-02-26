@@ -149,7 +149,7 @@ export function PatientCard({
             variant="body2"
             color="textSecondary"
             noWrap
-            maxWidth={"-webkit-fill-available"} //TODO check if this works for all required browsers
+            maxWidth={"-webkit-fill-available"}
           >
             Krankenkasse: {healthInsurance}
           </Typography>

@@ -54,10 +54,6 @@ public class MolecularPathologyFinding {
   @Convert(converter = CodeListConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private List<Code> typeOfDiagnostic;
-  // Todo: delete this comment if not needed
-//  @Convert(converter = CodeConverter.class)
-//  @ColumnTransformer(write = "?::jsonb")
-//  private Code typeOfDiagnostic;
 
   @Column(updatable = false)
   private Instant createdAt;

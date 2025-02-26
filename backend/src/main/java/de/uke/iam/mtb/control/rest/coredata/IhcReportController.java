@@ -267,8 +267,6 @@ public class IhcReportController implements IhcReportApi {
                             description = "Unauthorized - The provided credentials are unknown"),
                     @ApiResponse(responseCode = "403", description = "Forbidden"),
                     @ApiResponse(responseCode = "404", description = "Not found"),
-            // TODO @ApiResponse(responseCode = "409", description = "Conflict - ihcReport is
-            // referenced somewhere else")
             })
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/episodes/{episodeId}/ihcReports/{ihcReportId}")
