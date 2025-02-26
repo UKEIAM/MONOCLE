@@ -19,7 +19,7 @@ The MTB (MONOCLE) backend provides the API to read and save data regarding MTB p
 
 ## Installation
 
-#### Folder Mounts
+### Folder Mounts
 Create four folders to store the genetic files and MTB report. The folder names should be as follows:
 * main
 * unzip
@@ -28,24 +28,42 @@ Create four folders to store the genetic files and MTB report. The folder names 
 
 Update the paths in the docker-compose file (volumes) to be the same locations where these folders are created.
 
-#### Environment Variables
+### Environment Variables
 
-To provide environment variables using env file, copy the `example.env` file to your project directory and rename it to ```.env.development```
-  (for local use) or `.env.docker.development` (for Docker use).
-  Customize the variables inside the file, updating them with the desired values.
-
-
-**Note** : If you are using docker (docker-compose up) and your env file is not inside the main directory, you need to change the
-  location of the env file.
-  change the env_file configuration in mtb-control service to:
-
-```
-env_file:
-- ./file_path/.env.docker.development
-```
+To provide environment variables using env file, copy the `example.env` file to your project directory and rename it to ```.env```.
+Customize the variables inside the file, updating them with the desired values
+(See [Local](#local) for local use).
 
 **Note** : If the environment variables are defined in the system, the values in the .env file will be overwritten.
 
-#### 2. Docker
+### Local
+For a local run you can start the database service via docker with 
+```bash
+docker-compose up mtb-postgres
+```
+Please adjust the environment variables.
 
-Run `docker-compose up` to start the services.
+Build and package the application by running 
+```bash
+mvn package -f pom.xml
+```
+
+_**Hints**_:\
+In most cases the database is now accessed via `localhost:5432`, not the docker service name anymore.
+
+The Environment variables
+* MTB_MAIN_DIR
+* MTB_UNZIP_DIR
+* MTB_ARCHIVE_DIR
+* MTB_REPORTS_DIR
+
+are now the folders on your local host, not the folders within the docker container. 
+If your host is a Windows machine you need to adjust the paths accordingly (e.g. C:\\Users\\<user>\\MTB\\main).
+
+Add the location of the .env file in the IDE settings when running.
+
+Run the backend:
+```bash
+java -jar .\backend\target\control-<version>.jar fully.qualified.package.Application
+```
+\<version> must be replaced with [Version in pom](pom.xml).

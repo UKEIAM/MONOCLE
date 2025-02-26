@@ -1,7 +1,19 @@
 
 # MONOCLE
-Our software consists of [MTB Backend ](#mtb-backend) and [MTB GUI/Frontend](#mtb-gui).
+_Introduction_\
+We developed, introduced, and evaluated MONOCLE (Molecular ONcology Optimized CLinical Evaluation), a secure, open-source web application at 
+the University Medical Center Hamburg-Eppendorf (UKE), to optimize the analysis and discussion of complex cancer cases in molecular tumor boards (MTB).\
+_Methods_\
+MONOCLE standardizes and harmonizes documentation, while its integrated Knowledge Connector (KC) accelerates literature research for personalized treatment. 
+The system was designed by merging the requirements of the German Network for Personalized Medicine (DNPM) and the medical staff involved in the MTB process. 
+The usability was analyzed with the system usability scale (SUS) and user tasks.\
+_Results_\
+MONOCLE, introduced into clinical practice in June 2024, significantly reduces documentation and research time. Its usability and SUS showed positive results.
+Conclusion
+As the first open-source and extendable solution for standardized MTB documentation, MONOCLE enables wider adoption by other medical centers.
 
+
+Our software consists of [MTB Backend ](#mtb-backend) and [MTB GUI/Frontend](#mtb-gui).
 
 # MTB Backend
 
@@ -38,7 +50,6 @@ Update the paths in the docker-compose file (volumes) to be the same locations w
 To provide environment variables using env file, copy the `example.env` file to your project directory and rename it to ```.env```.
 Customize the variables inside the file, updating them with the desired values.
 
-
 **Note** : If you are using docker (docker-compose up) and your env file is not inside the main directory, you need to change the
 location of the env file.
 change the env_file configuration in mtb-control service to:
@@ -54,6 +65,7 @@ env_file:
 # MTB GUI
 
 This is the GUI for the MONOCLE project.
+For further details, please refer to the [MTB GUI README](./frontend/README.md).
 
 ## Services
 
@@ -66,6 +78,10 @@ This is the GUI for the MONOCLE project.
 `Keycloak` as an identity and access manager with openID protocol
 
 ## Installation
+
+For authorization, you need a Keycloak server running. Please refer to following [documentation](https://www.keycloak.org/getting-started/getting-started-docker) if you need to set up one first.
+Add a client with a standard flow authentication only, like this:
+![readme_keycloak_img.png](./frontend/readme_keycloak_img.png)
 
 #### Environment Variables
 
