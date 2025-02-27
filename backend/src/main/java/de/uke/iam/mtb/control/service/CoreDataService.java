@@ -306,7 +306,6 @@ public class CoreDataService {
             if (periodDto.getEnd() != null) {
                 period.put("end", periodDto.getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             }
-            // TODO bwhc likely requires the removal of nested objects/fields that are null elsewhere
             if (periodDto.getStart() != null || periodDto.getEnd() != null) {
                 history0.set("period", period);
             } else {

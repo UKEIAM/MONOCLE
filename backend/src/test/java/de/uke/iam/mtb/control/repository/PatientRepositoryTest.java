@@ -19,7 +19,7 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //
-//// TODO use @DataMongoTest for a Test MongoDB instance, when we do not need this test to insert data anymore?
+//
 //@SpringBootTest(classes = TestApplicationConfiguration.class, properties = {
 //    "spring.profiles.active=test"})
 //public class PatientRepositoryTest {
@@ -39,7 +39,7 @@
 //  @Test
 //  @Disabled
 //  public void insertPatientTest() {
-//    //Todo: check the steps of the workflow
+//
 //    Step entryDate = new Step(
 //        UUID.randomUUID(),
 //        "Aufnahmedatum",

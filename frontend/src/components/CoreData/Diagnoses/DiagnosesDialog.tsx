@@ -353,37 +353,6 @@ export function DiagnosesDialog({ open, onClose, editElement, histologyReportMap
                   })}
                 ></FormSelect>
               </Grid>
-              {/*TODO this might be in the KDSv2 data in the future*/}
-              {/*<Grid container item xs={12} spacing={2}>*/}
-              {/*  <Grid item xs={12}>*/}
-              {/*    <Typography style={{ fontWeight: "bold" }}>*/}
-              {/*      Ergänzend für erbliche Tumorerkrankungen*/}
-              {/*    </Typography>*/}
-              {/*  </Grid>*/}
-              {/*  <Grid item xs={6}>*/}
-              {/*    <FormTextField name={"orphanetCode.code"} label={"Orphanet"}></FormTextField>*/}
-              {/*  </Grid>*/}
-              {/*  <Grid item xs={6}>*/}
-              {/*    <FormTextField name={"orphanetCode.version"} label={"Version"}></FormTextField>*/}
-              {/*  </Grid>*/}
-              {/*</Grid>*/}
-              {/*<Grid item xs={12}>*/}
-              {/*  <FormTextField*/}
-              {/*    name={"alphaIdSeCode.code"}*/}
-              {/*    label={"(Alpha)-ID-SE"}*/}
-              {/*  ></FormTextField>*/}
-              {/*</Grid>*/}
-              {/*<Grid container item xs={12} spacing={2}>*/}
-              {/*  <EditableTable*/}
-              {/*    fieldName={"hpoIcd10"}*/}
-              {/*    rowTypes={hpoFieldDefinition}*/}
-              {/*    headerLabel={["Code", "Version"]}*/}
-              {/*    headerText={*/}
-              {/*      "Phänotypisierung auf der Grundlage der Human Phenotype Ontology (HPO)"*/}
-              {/*    }*/}
-              {/*    buttonText={"HPO Hinzufügen"}*/}
-              {/*  />*/}
-              {/*</Grid>*/}
               <Grid item xs={12}>
                 <Typography>* Pflichtfelder</Typography>
               </Grid>

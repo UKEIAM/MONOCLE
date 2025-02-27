@@ -22,7 +22,7 @@ const NotificationContext = React.createContext<NotificationContextType>(undefin
 export const NotificationProvider: React.FunctionComponent<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  // TODO maybe use an array of notifications to show multiple at once
+  // use an array of notifications to show multiple at once
   const [{ open, severity, message }, setNotification] = React.useState<Notification>({
     open: false,
     severity: "info", // Default to a valid severity type
