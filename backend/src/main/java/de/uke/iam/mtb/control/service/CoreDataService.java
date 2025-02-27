@@ -320,7 +320,7 @@ public class CoreDataService {
 
             /* wrap history0 so that the final result is in the format of
               [{history: [history0]}, {history: [history0]}, ...]
-              according to https://uke-iam.atlassian.net/wiki/spaces/MD/pages/226885669/Beispieldatensatz
+              according to the docu
              */
             ArrayNode history = objectMapper.createArrayNode();
             history.add(history0);
