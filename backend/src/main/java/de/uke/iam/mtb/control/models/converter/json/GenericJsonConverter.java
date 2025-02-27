@@ -13,7 +13,6 @@ import java.io.IOException;
  * their JSON string representations.
  *
  * @param <T> The type of object to convert (can be a single object or List of objects)
- * @author Omar Fulla
  */
 @Converter
 public class GenericJsonConverter<T> implements AttributeConverter<T, String> {
