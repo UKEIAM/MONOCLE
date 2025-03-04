@@ -108,9 +108,6 @@ public class CoreDataService {
         objectNode.set("episode", getEpisodeObject(episodeId));
         objectNode.set("diagnoses", objectMapper.valueToTree(diagnoseService.getAllDiagnoses(episodeId)));
         objectNode.set("familyMemberDiagnoses", getFamilyMemberDiagnosesArrayNode(episodeId));
-        // TODO probably will be guidelineTherapies and guidelineProcedures
-//        objectNode.set("previousGuidelineTherapies", getPreviousGuidelineTherapiesArrayNode(episodeId));
-//        objectNode.set("lastGuidelineTherapies", getLastGuidelineTherapiesArrayNode(episodeId));
         objectNode.set("ecogStatus", objectMapper.valueToTree(ecogStatusService.getAllEcogStatuss(episodeId)));
         objectNode.set("specimens", getSpecimenArrayNode(episodeId));
         objectNode.set("molecularPathologyFindings", objectMapper.valueToTree(molecularPathologyFindingService.getAllMolecularPathologyFindings(episodeId)));
@@ -200,65 +197,6 @@ public class CoreDataService {
         }
         return familyMemberDiagnosesArrayNode;
     }
-
-    //TODO probably will be guidelineTherapies and guidelineProcedures
-//    private ArrayNode getPreviousGuidelineTherapiesArrayNode(UUID episodeId) throws ForeignKeyException {
-//        List<GuidelineTherapyDto> previousGuidelineTherapies = guidelineTherapyService.getAllPreviousGuidelineTherapies(episodeId);
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.registerModule(new JavaTimeModule());
-//
-//        // Create an ArrayNode to hold the converted objects
-//        ArrayNode previousGuidelineTherapiesArrayNode = objectMapper.createArrayNode();
-//        objectMapper.registerModule(new JavaTimeModule());
-//        // Convert each GuidelineTherapy in the list to JsonNode with specific fields and add to the ArrayNode
-//        previousGuidelineTherapies.forEach(previousGuidelineTherapy -> {
-//            ObjectNode previousGuidelineTherapyNode = objectMapper.createObjectNode();
-//            previousGuidelineTherapyNode.put("id", previousGuidelineTherapy.getId().toString());
-//            previousGuidelineTherapyNode.put("episodeId", episodeId.toString());
-//            previousGuidelineTherapyNode.put("diagnosis", previousGuidelineTherapy.getDiagnosis().toString());
-//            previousGuidelineTherapyNode.put("therapyLine",
-//                previousGuidelineTherapy.getTherapyLine() != null ? previousGuidelineTherapy.getTherapyLine().toBigInteger() : null);
-//            previousGuidelineTherapyNode.set("medication", objectMapper.valueToTree(previousGuidelineTherapy.getMedication()));
-//
-//            previousGuidelineTherapiesArrayNode.add(previousGuidelineTherapyNode);
-//        });
-//
-//        return previousGuidelineTherapiesArrayNode;
-//    }
-//
-//    private ArrayNode getLastGuidelineTherapiesArrayNode(UUID episodeId) throws ForeignKeyException {
-//        List<GuidelineTherapyDto> lastGuidelineTherapiesList = guidelineTherapyService.getAllLastGuidelineTherapies(episodeId);
-//        // Create an ArrayNode for last guideline therapies
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.registerModule(new JavaTimeModule());
-//
-//        // Create an ArrayNode to hold the converted objects
-//        ArrayNode lastGuidelineTherapiesArrayNode = objectMapper.createArrayNode();
-//
-//        // Convert each GuidelineTherapy in the list to JsonNode with specific fields and add to the ArrayNode
-//        lastGuidelineTherapiesList.forEach(lastGuidelineTherapy -> {
-//            ObjectNode lastGuidelineTherapyNode = objectMapper.createObjectNode();
-//            lastGuidelineTherapyNode.put("id", lastGuidelineTherapy.getId().toString());
-//            lastGuidelineTherapyNode.put("episodeId", episodeId.toString());
-//            lastGuidelineTherapyNode.put("diagnosis", lastGuidelineTherapy.getDiagnosis().toString());
-//            lastGuidelineTherapyNode.put("therapyLine",
-//                lastGuidelineTherapy.getTherapyLine() != null ? lastGuidelineTherapy.getTherapyLine().toBigInteger() : null);
-//            lastGuidelineTherapyNode.set("medication", objectMapper.valueToTree(lastGuidelineTherapy.getMedication()));
-//
-//            ObjectNode periodNode = objectMapper.createObjectNode();
-//            periodNode.put("start", lastGuidelineTherapy.getPeriod().getStart().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//            if (lastGuidelineTherapy.getPeriod().getEnd() != null) {
-//                periodNode.put("end", lastGuidelineTherapy.getPeriod().getEnd().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-//            }
-//            lastGuidelineTherapyNode.replace("period", periodNode);
-//            if (lastGuidelineTherapy.getReasonStopped().getCode() != null) {
-//                lastGuidelineTherapyNode.set("reasonStopped", objectMapper.valueToTree(lastGuidelineTherapy.getReasonStopped()));
-//            }
-//            lastGuidelineTherapiesArrayNode.add(lastGuidelineTherapyNode);
-//        });
-//
-//        return lastGuidelineTherapiesArrayNode;
-//    }
 
     private ArrayNode getSpecimenArrayNode(UUID episodeId) throws ForeignKeyException {
         List<SpecimenDto> specimenList = specimenService.getAllSpecimens(episodeId);

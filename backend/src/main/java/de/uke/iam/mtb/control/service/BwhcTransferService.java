@@ -38,12 +38,8 @@ public class BwhcTransferService {
 
     public List<TransferJob> getAllOpenJobs() {
         List<TransferJob> open = bwhcTransferRepository.getAllByStatus(JobStatus.OPEN).stream().toList();
-//        List<TransferJob> error = transferJobRepository.getAllByStatus(JobStatus.ERROR).stream().toList();
-//        List<TransferJob> inProgress = transferJobRepository.getAllByStatus(JobStatus.INPROGRESS).stream().toList();
 
         List<TransferJob> jobs = new ArrayList<>(open);
-//        jobs.addAll(error);
-//        jobs.addAll(inProgress);
         return jobs;
     }
 

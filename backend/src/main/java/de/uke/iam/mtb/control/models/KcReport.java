@@ -29,7 +29,7 @@ public class KcReport {
     private UUID id;
     private String fileName;
     @ManyToOne
-    @JoinColumn(name = "episode_id", referencedColumnName = "id") // Specify the foreign key column name
+    @JoinColumn(name = "episode_id", referencedColumnName = "id")
     private Episode episode;
     @Column(updatable = false)
     private Instant createdAt;
@@ -37,11 +37,11 @@ public class KcReport {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+        createdAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+        updatedAt = Instant.now();
     }
 }

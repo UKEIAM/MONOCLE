@@ -14,12 +14,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-//@Entity
-//@Table(name = "rna_fusion")
-// Hibernate will execute the SQL statement specified in the @SQLDelete annotation, which sets the deletedAt field to the current timestamp.
-//@SQLDelete(sql = "UPDATE RnaFusion SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// The @Where annotation ensures that Hibernate only retrieves records that have not been marked as deleted.
-//@Where(clause = "deleted_at IS NULL")
 
 public class RnaSequence {
 

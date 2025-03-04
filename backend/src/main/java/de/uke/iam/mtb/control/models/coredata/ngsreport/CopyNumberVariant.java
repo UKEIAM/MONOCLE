@@ -18,21 +18,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-//@Entity
-//@Table(name = "copy_number_variant")
-// Hibernate will execute the SQL statement specified in the @SQLDelete annotation, which sets the deletedAt field to the current timestamp.
-//@SQLDelete(sql = "UPDATE CopyNumberVariant SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// The @Where annotation ensures that Hibernate only retrieves records that have not been marked as deleted.
-//@Where(clause = "deleted_at IS NULL")
-
-//Please note that this approach requires you to handle transactions manually to ensure that the delete() operation is actually executed.
-// You can do this by calling the flush() method on your repository or by using the @Transactional annotation on your service methods.
 public class CopyNumberVariant {
 
     @Id
     private String id;
-    //    @ManyToOne
-//    private Episode episode;
     private ChromosomeType chromosome;
     @Convert(converter = StartEndRangeConverter.class)
     private StartEndRange startRange;
