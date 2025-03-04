@@ -33,10 +33,6 @@ services:
       - /opt/mtb/reports:/app/mtb-data/reports
     ports:
       - "${CONTROL_PORT:-8080}:8080"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      - default
     depends_on:
       mtb-database:
         condition: service_healthy
@@ -56,10 +52,6 @@ services:
       - ./config.js:/usr/share/nginx/html/config.js
     ports:
       - "${GUI_PORT:-3000}:80"
-
-networks:
-  default:
-    name: mtb-network
 
 volumes:
   mtb-postgres-data:
