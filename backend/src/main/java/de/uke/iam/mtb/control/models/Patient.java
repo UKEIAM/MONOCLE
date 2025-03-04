@@ -47,7 +47,7 @@ public class Patient {
   @OneToMany(mappedBy = "patient")
   private List<Episode> episodes;
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "health_insurance_id", referencedColumnName = "ik") // Specify the foreign key column name
+  @JoinColumn(name = "health_insurance_id", referencedColumnName = "ik")
   private HealthInsurance healthInsurance;
   @Column(updatable = false)
   private Instant createdAt;
@@ -56,12 +56,12 @@ public class Patient {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+    createdAt = Instant.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+    updatedAt = Instant.now();
   }
 
 

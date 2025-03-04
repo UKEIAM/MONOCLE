@@ -17,9 +17,7 @@ import java.util.UUID;
 @ToString
 @Entity
 @Table(name = "histology_reevaluation_request")
-// Hibernate will execute the SQL statement specified in the @SQLDelete annotation, which sets the deletedAt field to the current timestamp.
 @SQLDelete(sql = "UPDATE histology_reevaluation_request SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// The @Where annotation ensures that Hibernate only retrieves records that have not been marked as deleted.
 @Where(clause = "deleted_at IS NULL")
 
 public class HistologyReevaluationRequest {
@@ -40,12 +38,12 @@ public class HistologyReevaluationRequest {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+        createdAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+        updatedAt = Instant.now();
     }
 
 

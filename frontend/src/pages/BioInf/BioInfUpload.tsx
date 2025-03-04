@@ -8,7 +8,7 @@ export default function BioInfUpload() {
   const { UploadApi } = useApi()
   const { showSuccessNotification, showErrorNotification } = useNotification()
   const [files, setFiles] = useState<File[]>([])
-  const allowedFileEndings = (window.config.ALLOWED_BIOINF_FILEENDINGS ?? ".pdf").split(",") // TODO fallback pdf ok?
+  const allowedFileEndings = (window.config.ALLOWED_BIOINF_FILEENDINGS ?? ".pdf").split(",")
 
   const hasOneFileWrongFileEndings = () => {
     return files.some((value: File) => {

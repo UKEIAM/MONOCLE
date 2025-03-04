@@ -48,7 +48,6 @@ export default function FormNumberField({
               error={!!formErrors}
               helperText={formErrors?.message}
               sx={{
-                //TODO not tested yet
                 ...sx,
                 ".MuiOutlinedInput-notchedOutline": {
                   border: formErrors

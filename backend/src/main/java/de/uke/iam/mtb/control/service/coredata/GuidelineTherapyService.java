@@ -39,7 +39,6 @@ public class GuidelineTherapyService {
         Episode episodeReference = episodeService.getEpisodeReference(guidelineTherapyDto.getEpisodeId());
         Diagnose diagnoseReference = diagnoseService.getDiagnoseReference(guidelineTherapyDto.getDiagnosis());
 
-        // TODO : the two lines could be deleted if not necessary
         MolecularTherapyResponse molecularTherapyResponseReference = null;
         if (guidelineTherapyDto.getMolecularTherapyResponse() != null) {
             molecularTherapyResponseReference = molecularTherapyResponseService
@@ -99,7 +98,6 @@ public class GuidelineTherapyService {
         return savedGuidelineTherapy.stream().map(guidelineTherapyMapper::toDto).toList();
     }
 
-    // TODO : guidelineTherapyId is not used in this method
     public GuidelineTherapyDto updateGuidelineTherapy(UUID guidelineTherapyId, GuidelineTherapyDto guidelineTherapyDto)
         throws ForeignKeyException {
 
@@ -110,7 +108,6 @@ public class GuidelineTherapyService {
 
         GuidelineTherapy guidelineTherapy = guidelineTherapyMapper.toEntity(guidelineTherapyDto);
 
-        // TODO : the two lines could be deleted if not necessary
         MolecularTherapyResponse molecularTherapyResponseReference = null;
         if (guidelineTherapyDto.getMolecularTherapyResponse() != null) {
             molecularTherapyResponseReference = molecularTherapyResponseService

@@ -84,8 +84,7 @@ export default function Presentations() {
         }}
       />
       {confirmOpen &&
-        itemToBeDeleted && ( // If not checked a nullpointer occures
-          // TODO: Use new DeleteConfirmationDialog after merged  https://github.com/UKEIAM/de.uke.iam.mtb.gui/pull/202
+        itemToBeDeleted && (
           <DeleteConfirmationDialog
             isOpen={confirmOpen}
             onClose={() => setConfirmOpen(false)}

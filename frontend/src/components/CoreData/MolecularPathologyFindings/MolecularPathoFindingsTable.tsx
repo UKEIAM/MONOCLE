@@ -87,14 +87,12 @@ export function MolecularPathoFindingsTable({
             },
             { value: toGermanDateFormat(molFindings.issuedOn) },
             { value: molFindings.note },
-            // Todo : show a list of diagnostic types
             {
               value: molFindings.typeOfDiagnostic
                 ?.filter((item) => item && item.display) // Filter out invalid or undefined items
                 .map((item) => item.display) // Extract the display property
                 .join(", "), // Join them into a single string with commas
             },
-            // Todo : either remove the following lines or the preceding lines depending on the requirements
             // {
             //   value: molFindings.typeOfDiagnostic?.code
             //     ? molFindings.typeOfDiagnostic.code +

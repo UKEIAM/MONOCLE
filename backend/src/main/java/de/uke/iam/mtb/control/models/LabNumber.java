@@ -31,6 +31,6 @@ public class LabNumber {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+    createdAt = Instant.now();
   }
 }

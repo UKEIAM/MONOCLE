@@ -180,7 +180,6 @@ export function SpecimensDialog({ open, onClose, editElement }: PropType) {
                         message: "Entnahmemethode ist erforderlich",
                       },
                     }}
-                    /* TODO: how about create a method in FormUtils to convert Enums to SelectOptions? */
                     options={getEnumKeys(SpecimenCollectionMethodEnum).map((item) => {
                       return {
                         label:

@@ -95,16 +95,13 @@ export default function ClaimResponsesTable({
 }
 
 const columns: Column[] = [
-  //TODO: Remove formField if not needed!
-  { formField: "claimResponse.claim", label: "Antrag" },
-  { formField: "claimResponse.issuedOn", label: "Antwortdatum", format: toGermanDateFormat },
+  { label: "Antrag" },
+  { label: "Antwortdatum", format: toGermanDateFormat },
   {
-    formField: "claimResponse.status",
     label: "Status",
     format: (v) => statusOptions.find((e) => e.value === v)?.label ?? "",
   },
   {
-    formField: "claimResponse.reason",
     label: "Grund",
     format: (v) => reasonOptions.find((e) => e.value === v)?.label ?? "",
   },

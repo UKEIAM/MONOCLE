@@ -3,7 +3,6 @@ interface ConfigType {
   KEYCLOAK_AUTH_URL: string
   KEYCLOAK_CLIENT_ID: string
   KEYCLOAK_REDIRECT_URI: string
-  KEYCLOAK_CLIENT_SECRET: string
   MTB_CONTROL_URL: string
   KC_URL: string
   BWHC_URL: string

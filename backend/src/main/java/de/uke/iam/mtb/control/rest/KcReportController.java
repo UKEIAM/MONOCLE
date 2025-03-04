@@ -99,7 +99,6 @@ public class KcReportController implements KcReportApi {
             return new ResponseEntity<>(HttpStatus.UNSUPPORTED_MEDIA_TYPE);
         }
         // Check if episode does not exist, return 404 Not Found
-        // Todo: what is the standard if the given parameter is not found? BAD_REQUEST? or NOT_FOUND?
         if (!episodeService.isEpisodeExist(episodeId)) {
             auditTrailService.addEntry(jwtClaimMap, methodName + " failed, Episode not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

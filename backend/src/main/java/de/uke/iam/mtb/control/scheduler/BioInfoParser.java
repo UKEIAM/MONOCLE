@@ -99,7 +99,7 @@ public class BioInfoParser {
         objectMapper.findAndRegisterModules();
 
         for (String listOfFile : listFilesUsingFileWalk(unzip_dir, 1)) {
-            // FIXME: Change to "get LabNumberList from DB" to iterate, not from FileName
+            // Change to "get LabNumberList from DB" to iterate, not from FileName
             if (listOfFile.contains("NGS-Report_")) {
 
                 String labNumberFromFileString = getLabNumberFromFileName(listOfFile);
@@ -151,23 +151,18 @@ public class BioInfoParser {
                 logger.debug("Add TumorCellContent to NGS Report");
 
                 // NGSReport ID, wont define by BioINfo
-                ngsReport.setId(UUID.randomUUID().toString()); //FIXME: Need to be send from BioInfo
+                ngsReport.setId(UUID.randomUUID().toString()); //Need to be send from BioInfo
 
                 // Check if patho has combined a E/N-number (specimen label) with a labnumber
                 if (isLabnumberRegistered(labNumberFromFileString)) {
                     // Yes, Patho has set a E/N-Number and Labnumber combination (Specimen is already created!)
 
                     List<SpecimenDto> specimenDtoList = getSpecimenListFromDBByLabNumberFromFile(labNumberFromFileString);
-                    //TODO: Remove System when refactoring is done
-                    System.out.println(specimenDtoList); // Print all saved Specimen in DB with specific SpacimenLaben from LabNumber File Name
 
                     // is True, only when a Specimen with a lable combination was submit by patho
-                    SpecimenDto specimenDto = specimenDtoList.get(0); //FIXME: What if multiple Specimen has the same Label!?
-                    //TODO: Remove System when refactoring is done
-                    System.out.println(specimenDto);
-                    // TODO set specimenId to msi, tmb, brcaness, hrd
+                    SpecimenDto specimenDto = specimenDtoList.get(0);
 
-                    //FIXME: What is when, a NGS-Report with this specimen already exsits?
+                    //What is when, a NGS-Report with this specimen already exsits?
                     if (!ngsReportService.isSpecimenAlreadyInNGSReport(specimenDto.getId())) {
                         Specimen specimen = specimenMapper.toEntity(specimenDto);
                         ngsReport.setSpecimen(specimen);
@@ -178,7 +173,6 @@ public class BioInfoParser {
                         ngsReport.setEpisode(episode);
 
                         NgsReportDto ngsReportDto = ngsReportMapper.toDto(ngsReport);
-                        // TODO it should not be converted to DTO because in service it is converted back to entity and then saved.
                         NgsReportDto resultNGSReport = ngsReportService.addNgsReport(ngsReportDto);
                         logger.debug("Added NgsReport {}", resultNGSReport.getId());
 
@@ -186,7 +180,7 @@ public class BioInfoParser {
                             cleanUpTemparyFilesAndAssignedLabNumber(labNumberFromFileString);
                             // DONE! Exit.
                         } else {
-                            //FIXME! What if NGSReport wont save in DB??
+                            //What if NGSReport wont save in DB??
                             //Optinal FIx: Set Labnumber Assinged Status?
                             logger.error("Error! NgsReport won't save. LabNumber: {}", labNumberFromFileString);
                         }

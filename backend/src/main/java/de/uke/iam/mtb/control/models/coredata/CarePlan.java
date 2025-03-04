@@ -54,15 +54,14 @@ public class CarePlan {
   @Convert(converter = NoTargetFindingConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private NoTargetFinding noTargetFinding;
-  // Todo: this object should be a replacement for noTargetFinding
   @Convert(converter = CodeConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private Code statusReason;
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-      name = "care_plan_therapy_recommendation", // specify the name of the join table here
-      joinColumns = @JoinColumn(name = "care_plan_id"), // specify the name of the column in the join table that references the current entity
-      inverseJoinColumns = @JoinColumn(name = "therapy_recommendation_id") // specify the name of the column in the join table that
+      name = "care_plan_therapy_recommendation",
+      joinColumns = @JoinColumn(name = "care_plan_id"),
+      inverseJoinColumns = @JoinColumn(name = "therapy_recommendation_id")
       // references the other entity
   )
   private List<TherapyRecommendation> recommendations;
@@ -70,17 +69,17 @@ public class CarePlan {
   private GeneticCounsellingRequest geneticCounsellingRequest;
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
-      name = "care_plan_rebiopsy_request", // specify the name of the join table here
-      joinColumns = @JoinColumn(name = "care_plan_id"), // specify the name of the column in the join table that references the current entity
-      inverseJoinColumns = @JoinColumn(name = "rebiopsy_request_id") // specify the name of the column in the join table that references
+      name = "care_plan_rebiopsy_request",
+      joinColumns = @JoinColumn(name = "care_plan_id"),
+      inverseJoinColumns = @JoinColumn(name = "rebiopsy_request_id")
       // the other entity
   )
   private List<RebiopsyRequest> rebiopsyRequests;
   @ManyToMany
   @JoinTable(
-      name = "care_plan_study_inclusion_request", // specify the name of the join table here
-      joinColumns = @JoinColumn(name = "care_plan_id"), // specify the name of the column in the join table that references the current entity
-      inverseJoinColumns = @JoinColumn(name = "study_inclusion_request") // specify the name of the column in the join table that
+      name = "care_plan_study_inclusion_request",
+      joinColumns = @JoinColumn(name = "care_plan_id"),
+      inverseJoinColumns = @JoinColumn(name = "study_inclusion_request")
       // references the other entity
   )
   private List<StudyInclusionRequest> studyInclusionRequests;
@@ -92,12 +91,12 @@ public class CarePlan {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+    createdAt = Instant.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+    updatedAt = Instant.now();
   }
 
 }

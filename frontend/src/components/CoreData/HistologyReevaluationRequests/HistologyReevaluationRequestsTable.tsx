@@ -64,7 +64,6 @@ export default function HistologyReevaluationRequestsTable({
         setHistologyReevaluationRequests([...data])
       })
       .catch(() => {
-        // TODO
       })
   }
 

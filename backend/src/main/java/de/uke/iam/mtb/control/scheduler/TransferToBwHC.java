@@ -182,8 +182,6 @@ public class TransferToBwHC {
         // Filter the list to get only one id (ML_GENRATED_ID) to be sent to DNPM
         Optional<PatientIdMlDto> patientIdOptional = patientIds.stream().filter(
             patient -> patient.getIdType().equals(ML_GENRATED_ID)).findFirst();
-        // TODO: The Mainzelliste gives an 201 status code with an empty list in body response even if the patient is not pseundonymized. HOW
-        //  TO HANDLE THIS CASE?
         if (patientIdOptional.isPresent()) {
             pseudonymizedId = patientIdOptional.get().getIdString();
         }

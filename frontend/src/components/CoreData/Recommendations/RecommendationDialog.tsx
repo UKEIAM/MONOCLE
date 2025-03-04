@@ -163,7 +163,6 @@ export default function RecommendationDialog({
   }
 
   const getAvailableVariantsOptions = () => {
-    // TODO : check if we can optimize this
     return supportingVariantsOptions
       .filter((entry) => selectedNgsReport?.includes(entry.id))
       .flatMap((elem) => elem.values)

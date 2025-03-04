@@ -123,7 +123,6 @@ export function GuidelineTherapiesDialog({
                     validationRules={{ warning: true }}
                   />
                 </Grid>
-                {/*Todo : add ATC code to the component + refactor the component*/}
                 <MedicationComponent />
                 {/*TODO : wait until it is clear which code will be used in the following components*/}
                 {/*                <Grid container item xs={12} spacing={2}>
@@ -157,7 +156,7 @@ export function GuidelineTherapiesDialog({
                   </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                  procedurePosition TODO to be checked if correct
+                  procedurePosition
                   <FormSelect
                     name={"procedurePosition"}
                     label={"Stellung zur OP"}
@@ -165,18 +164,18 @@ export function GuidelineTherapiesDialog({
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  intention TODO to be checked if correct
+                  intention
                   <FormSelect name={"intention"} label={"Intention"} options={intensionOptions} />
                 </Grid>*/}
                 {/*<Grid item xs={12}>*/}
-                {/*  /!*progressDate TODO to be checked if correct *!/*/}
+                {/*  /!*progressDate  *!/*/}
                 {/*  <FormDatePicker*/}
                 {/*    name={"progressDate"}*/}
                 {/*    label={"Datum Progress"}*/}
                 {/*  />*/}
                 {/*</Grid>*/}
                 {/*<Grid item xs={12}>*/}
-                {/*  /!*molecularTherapyResponse TODO to be checked if correct *!/*/}
+                {/*  /!*molecularTherapyResponse  *!/*/}
                 {/*  <FormSelect*/}
                 {/*    name={"molecularTherapyResponse"}*/}
                 {/*    label={"Therapieansprechen (Molekular-Therapie-Befund)"}*/}

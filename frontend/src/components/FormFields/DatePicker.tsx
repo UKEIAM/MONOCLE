@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DatePicker as MuiDatePicker } from "@mui/x-date-pickers/DatePicker/DatePicker"
 import dayjs, { Dayjs } from "dayjs"
 import React from "react"
-import { PickerChangeHandlerContext } from "@mui/x-date-pickers/internals/hooks/usePicker/usePickerValue.types"
+import { PickerChangeHandlerContext } from "@mui/x-date-pickers"
 
 export interface DatePickerProps {
   name: string

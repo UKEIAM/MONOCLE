@@ -129,5 +129,4 @@ yarn-error.log*
 /src/gen
 
 # End of https://www.toptal.com/developers/gitignore/api/react,intellij+all
-/package-lock.json
 /public/config.js

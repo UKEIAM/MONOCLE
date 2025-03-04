@@ -32,7 +32,6 @@ export default function FormDatePicker({
   defaultValue,
   validationRules,
   showFormat = "DD.MM.YYYY",
-  // TODO: check if it matters that the saveFormat should be setted. I think it is not, because the backend will convert it to the right format
   saveFormat = "YYYY-MM-DD",
   mindate,
   maxdate,
