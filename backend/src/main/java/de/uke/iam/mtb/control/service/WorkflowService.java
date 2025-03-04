@@ -25,17 +25,6 @@ public class WorkflowService {
 
   public List<WorkflowDto> getAllWorkflows() {
     return workflowRepository.findAllWorkflowsWithFilteredAndSortedSteps().stream().map(workflowMapper::toDto).toList();
-//    return workflowRepository.findAll().stream()
-//        .map(workflowMapper::toDto)
-//        .map(workflowDto -> {
-//          List<StepDto> filteredAndSortedSteps = workflowDto.getSteps().stream()
-//              .filter(stepDto -> !stepDto.getSteps().isEmpty())
-//              .sorted(Comparator.comparing(StepDto::getId))
-//              .collect(Collectors.toList());
-//          workflowDto.setSteps(filteredAndSortedSteps);
-//          return workflowDto;
-//        })
-//        .toList();
   }
 
   public List<Step> extractStepsFromWorkflow(Workflow workflow) {
