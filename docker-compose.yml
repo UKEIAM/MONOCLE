@@ -6,7 +6,7 @@ services:
       - mtb-postgres-data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init script
       - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json  # Mount JSON file
-      - ./workflow.json:/docker-entrypoint-initdb.d/workflow.json  # Mount JSON file
+      - ./import-health-care.sh:/docker-entrypoint-initdb.d/import-health-care.sh  # Import script
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-mtb}" ]
       interval: 10s
