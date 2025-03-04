@@ -4,7 +4,7 @@ services:
     container_name: mtb-database
     volumes:
       - mtb-postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init script
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql  # Mount the init script
       - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json  # Mount JSON file
       - ./workflow.json:/docker-entrypoint-initdb.d/workflow.json  # Mount JSON file
     healthcheck:
