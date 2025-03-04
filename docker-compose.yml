@@ -4,9 +4,9 @@ services:
     container_name: mtb-database
     volumes:
       - mtb-postgres-data:/var/lib/postgresql/data
-      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql  # Mount the init script
-      - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json  # Mount JSON file
-      - ./import-health-care.sh:/docker-entrypoint-initdb.d/import-health-care.sh  # Import script
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json
+      - ./import-health-care.sh:/docker-entrypoint-initdb.d/import-health-care.sh
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-mtb}" ]
       interval: 10s
@@ -22,7 +22,7 @@ services:
 
   mtb-control:
     build:
-      context: ./backend  # Build from the backend directory
+      context: ./backend
       dockerfile: Dockerfile
     image: mtb-control:latest
     container_name: mtb-control
