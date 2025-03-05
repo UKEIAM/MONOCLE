@@ -1,21 +1,17 @@
 #!/bin/bash
-
-echo "Waiting for PostgreSQL to be ready..."
+# Run the import script in the background
+( echo "Waiting for PostgreSQL to be ready..."
 until psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT 1;" &> /dev/null; do
-  sleep 30
+  sleep 60
   echo "Waiting for PostgreSQL... still not ready."
 done
 echo "PostgreSQL is ready."
-
-# Run init.sql explicitly
-echo "Running init.sql..."
-psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -f "/docker-entrypoint-initdb.d/init.sql" || echo "Failed to run init.sql"
 
 # Ensure the health_insurance table exists before proceeding
 echo "Checking if health_insurance table exists..."
 until psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "SELECT to_regclass('public.health_insurance');" | grep -q "health_insurance"; do
   echo "Waiting for health_insurance table to be created..."
-  sleep 30
+  sleep 240
 done
 
 echo "Importing JSON data into PostgreSQL..."
@@ -52,3 +48,35 @@ FROM json_data;
 "
 
 echo "JSON import completed."
+
+echo "Inserting workflow and step data..."
+psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "
+-- Insert into workflow table if not exists
+INSERT INTO workflow (id)
+VALUES (1)
+ON CONFLICT (id) DO NOTHING;
+
+-- Insert steps into step table
+INSERT INTO step (id, name, skippable, parent_step_id)
+VALUES
+    (0, 'Klinische Daten', false, NULL),
+    (1, 'Anforderung', false, NULL),
+    (2, 'Genetische Daten', false, NULL),
+    (3, 'MTB-Beschluss und MTB-Report', false, NULL),
+    (4, 'Übermittlung', false, NULL)
+ON CONFLICT (id) DO NOTHING;
+
+-- Insert into workflow_steps table if not exists
+INSERT INTO workflow_steps (workflow_id, steps_id)
+VALUES
+    (1, 0),
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 4)
+ON CONFLICT DO NOTHING;
+"
+echo "Workflow and step data insertion completed."
+) &
+# Immediately exit with a successful status
+exit 0

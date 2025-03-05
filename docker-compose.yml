@@ -4,9 +4,8 @@ services:
     container_name: mtb-database
     volumes:
       - mtb-postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json
-      - ./import-health-care.sh:/docker-entrypoint-initdb.d/import-health-care.sh
+      - ./import-data.sh:/docker-entrypoint-initdb.d/import-data.sh
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}", "-d", "${POSTGRES_DB:-mtb}" ]
       interval: 10s
@@ -16,9 +15,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-mtb}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-insertPassword}
-#  # Port should only be visible to the outside if explicitly desired, e.g. to make it easier to view the database.
-#    ports:
-#      - "5432:5432"
+    # Port should only be visible to the outside if explicitly desired, e.g. to make it easier to view the database.
+    ports:
+      - "5432:5432"
 
   mtb-control:
     build:
