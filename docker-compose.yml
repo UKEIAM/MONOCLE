@@ -16,8 +16,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-insertPassword}
     # Port should only be visible to the outside if explicitly desired, e.g. to make it easier to view the database.
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
 
   mtb-control:
     build:
