@@ -44,7 +44,7 @@ export function HistologyReportsDialog({ open, onClose, editElement, specimenMap
 
   useEffect(() => {
     methods.reset({
-      id: editElement?.id, //TODO do in backend,
+      id: editElement?.id,
       episodeId: episodeId,
       specimen: editElement?.specimen ?? "",
       issuedOn: editElement?.issuedOn ?? undefined,
@@ -108,7 +108,6 @@ export function HistologyReportsDialog({ open, onClose, editElement, specimenMap
 
     formData.tumorMorphology!.specimen = formData.specimen ?? ""
 
-    // TODO: can be optimized and required fields must be set in html
     // tumor morphology
     const tumorMorphologyVersion = formData.tumorMorphology?.value?.version
     const tumorMorphologyCode = formData.tumorMorphology?.value?.code

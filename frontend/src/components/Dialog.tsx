@@ -30,7 +30,6 @@ const Dialog = ({
     {open ? (
       <MuiDialog open={true}>
         {" "}
-        {/*TODO could be open={open} but shouldnt change anything*/}
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>

@@ -63,7 +63,6 @@ export function MolecularPathoFindingsDialog({
       issuedOn: editElement?.issuedOn ?? "",
       note: editElement?.note ?? "",
       typeOfDiagnostic: editElement?.typeOfDiagnostic ?? [],
-      // Todo : either remove the following lines or the last lines depending on the requirements
       // typeOfDiagnostic: editElement?.typeOfDiagnostic ?? undefined,
     })
   }, [open])
@@ -92,7 +91,6 @@ export function MolecularPathoFindingsDialog({
       isValid = false
     }
     // Map code to display value
-    // Todo : should we set a default value for version and system of typeOfDiagnostic
     if (formData.typeOfDiagnostic !== undefined) {
       formData.typeOfDiagnostic = formData.typeOfDiagnostic.map((item) => {
         const diagnostic = artOfDiagnostic.find((d) => d.value === item.code)
@@ -102,8 +100,6 @@ export function MolecularPathoFindingsDialog({
         }
       })
     }
-    // Todo : either remove the following lines or the last lines depending on the requirements
-    // Todo : Maybe optimize the following lines if they will stay in the code
     // if (formData.typeOfDiagnostic && formData.typeOfDiagnostic.code !== undefined) {
     //   formData.typeOfDiagnostic.display = artOfDiagnostic.find(
     //     (item) => item.value === formData.typeOfDiagnostic?.code,
@@ -197,7 +193,6 @@ export function MolecularPathoFindingsDialog({
                   headerText={"Art der Diagnostik"}
                   buttonText={"Art der Diagnostik Hinzufügen"}
                 />
-                {/*Todo : either remove the following lines or the last lines depending on the requirements*/}
                 {/*<Select*/}
                 {/*  isRequired={true}*/}
                 {/*  name={"typeOfDiagnostic.code"}*/}

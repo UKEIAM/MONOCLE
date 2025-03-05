@@ -11,7 +11,7 @@
   </parent>
   <groupId>de.uke.iam.mtb</groupId>
   <artifactId>control</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>de.uke.iam.mtb.control</name>
   <description>de.uke.iam.mtb.control</description>

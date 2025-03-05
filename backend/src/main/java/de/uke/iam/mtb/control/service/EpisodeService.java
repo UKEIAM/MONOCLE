@@ -90,8 +90,6 @@ public class EpisodeService {
 
     newEpisode.setReport(oldEpisode.getReport());
     newEpisode.setDecision(oldEpisode.getDecision());
-    // TODO: clone the presentations of the latest episode??
-    // newEpisode = CloningMapper.INSTANCE.episodeClone(latestEpisode);
     // copy the requirement of the latest episode to the new episode
     Requirement oldRequirement = requirementRepository.findByEpisodeId(oldEpisode.getId());
     if (oldRequirement != null) {
@@ -100,7 +98,7 @@ public class EpisodeService {
       Requirement newRequirement = requirementRepository.save(clonedRequirement);
       newEpisode.setRequirement(newRequirement);
     }
-    // Todo : By Creating a new Episode , copy the old core data of the patient to the new episode using CoreDataCloneService
+    // By Creating a new Episode , copy the old core data of the patient to the new episode using CoreDataCloneService
    coreDataCloneService.cloneCoreData(oldEpisode.getId(), newEpisode);
   }
 

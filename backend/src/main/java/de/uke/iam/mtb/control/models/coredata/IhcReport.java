@@ -34,16 +34,8 @@ import lombok.ToString;
 @ToString
 @Entity
 @Table(name = "IHC_REPORT")
-// Hibernate will execute the SQL statement specified in the @SQLDelete
-// annotation, which sets the deletedAt field to the current timestamp.
 @SQLDelete(sql = "UPDATE IHC_REPORT SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// The @Where annotation ensures that Hibernate only retrieves records that have
-// not been marked as deleted.
 @Where(clause = "deleted_at IS NULL")
-// Please note that this approach requires you to handle transactions manually
-// to ensure that the delete() operation is actually executed.
-// You can do this by calling the flush() method on your repository or by using
-// the @Transactional annotation on your service methods.
 public class IhcReport {
     @Id
     @GeneratedValue(generator = "UUID")

@@ -39,7 +39,7 @@ WORKDIR /app
 
 ## Copy the packaged jar file from the build stage to the container
 COPY --from=build /app/target/*.jar mtb-control.jar
-#COPY --from=build /app/target/* .
+
 # Expose the port on which your Spring Boot application will run
 EXPOSE 8080
 

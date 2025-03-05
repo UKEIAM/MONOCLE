@@ -57,7 +57,7 @@ export function TumorCellContent({ readonly }: { readonly: boolean }) {
 }
 
 /**
- * @deprecated // TODO add Old to name as per convention elsewhere
+ * @deprecated
  */
 export type tumorCellContentType = {
   id: string

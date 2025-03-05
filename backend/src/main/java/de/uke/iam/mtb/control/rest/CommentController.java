@@ -9,6 +9,7 @@ import de.uke.iam.mtb.control.helper.FullnameKeyCloakHelper;
 import de.uke.iam.mtb.control.security.JwtClaimMap;
 import de.uke.iam.mtb.control.service.AuditTrailService;
 import de.uke.iam.mtb.control.service.CommentService;
+import de.uke.iam.mtb.control.service.PatientService;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
@@ -25,24 +26,31 @@ import org.springframework.web.bind.annotation.RestController;
 public class CommentController implements CommentsApi {
 
   private final CommentService commentService;
-
+  private final PatientService patientService;
   private final AuditTrailService auditTrailService;
 
-  public CommentController(CommentService commentService, AuditTrailService auditTrailService) {
+  public CommentController(CommentService commentService, PatientService patientService, AuditTrailService auditTrailService) {
     this.commentService = commentService;
+    this.patientService = patientService;
     this.auditTrailService = auditTrailService;
   }
 
   @Override
   @Secured({"ROLE_MTBDOCTOR"})
   public ResponseEntity<List<CommentDto>> getComments(@RequestParam(name = "patientId", required = false) UUID patientId) {
-    // TODO: check if patient exists
     JwtClaimMap jwtClaimMap = new JwtClaimMap((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
     if (patientId == null) {
       auditTrailService.addEntry(jwtClaimMap, getCurrentMethodName() + " get all comments ");
       return ResponseEntity.ok(commentService.getAllComments());
     } else {
       auditTrailService.addEntry(jwtClaimMap, getCurrentMethodName() + " get comments by PatientId: " + patientId);
+
+      if (!patientService.isPatientExist(patientId)) {
+        auditTrailService.addEntry(jwtClaimMap, getCurrentMethodName() + " patient does not exist with id " + patientId);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      }
+
       return ResponseEntity.ok(commentService.getUndeletedCommentsByPatientID(patientId));
     }
   }

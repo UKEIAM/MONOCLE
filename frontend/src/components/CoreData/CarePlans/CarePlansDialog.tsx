@@ -76,12 +76,10 @@ export function CarePlansDialog({
       })
     }
 
-    // Todo : why do we need this check?
     if (carePlan.issuedOn === "") {
       setopenIssuedOnWarning(true)
       return
     }
-    // Todo : why do we need this check?
     if (carePlan.geneticCounsellingRequest) {
       if (carePlan.geneticCounsellingRequest.issuedOn === "") {
         setopenIssuedOnWarning(true)
@@ -90,7 +88,6 @@ export function CarePlansDialog({
     }
     // noTargetFinding is a boolean value for the checkbox and doesn't belong to care plan object
     if (noTargetFinding) {
-      // Todo: what should we do with the NoTargetFinding? maybe delete it
       // Add NoTargetFinding Object
       carePlan.noTargetFinding = {
         episodeId: episodeId,
@@ -106,7 +103,6 @@ export function CarePlansDialog({
       // Delete Recommendation
       delete carePlan.recommendations
     } else {
-      // TODO : delete this too, if the object noTargetFinding is not needed
       // Delete NoTargetFinding Object
       delete carePlan.noTargetFinding
       delete carePlan.statusReason
@@ -114,7 +110,6 @@ export function CarePlansDialog({
 
     if (isValid) triggerSubmit(carePlan)
   }
-  // TODO: can we make this more readable?
   const triggerSubmit = (carePlan: CarePlan) => {
     // fill genetic counselling request object with all necessary values or delete it
     let display = carePlan.geneticCounsellingRequest?.reason?.display
@@ -224,7 +219,6 @@ export function CarePlansDialog({
                 />
               </Grid>
               <Grid item xs={12}>
-                {/* TODO: Create rebiopsyRequests String */}
                 <Autocomplete
                   label={"Rebiopsie-Auftrag (Mehrfachauswahl)"}
                   name={`rebiopsyRequests`}
@@ -243,7 +237,6 @@ export function CarePlansDialog({
                 />
               </Grid>
               <Grid item xs={12}>
-                {/* TODO: Create studyInclusionRequests String */}
                 <Autocomplete
                   label={"Studien-Einschluss-Empfehlung (Mehrfachauswahl)"}
                   name={`studyInclusionRequests`}
@@ -265,7 +258,6 @@ export function CarePlansDialog({
                 <Typography>* Pflichtfelder</Typography>
               </Grid>
             </Grid>
-            {/*TODO : Should not we delete this warning modal?*/}
             <WarningModal
               title={"Erstellungsdatum ist leer"}
               message={"Möchten Sie den Therapieplan trotzdem hinzufügen?"}

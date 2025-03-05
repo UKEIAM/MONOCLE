@@ -37,9 +37,7 @@ import org.hibernate.annotations.Where;
 @ToString
 @Entity
 @Table(name = "study_inclusion_request")
-// Hibernate will execute the SQL statement specified in the @SQLDelete annotation, which sets the deletedAt field to the current timestamp.
 @SQLDelete(sql = "UPDATE study_inclusion_request SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// The @Where annotation ensures that Hibernate only retrieves records that have not been marked as deleted.
 @Where(clause = "deleted_at IS NULL")
 
 public class StudyInclusionRequest {
@@ -51,11 +49,7 @@ public class StudyInclusionRequest {
     @JoinColumn(name = "episode_id", referencedColumnName = "id")
     private Episode episode;
     private LocalDate issuedOn;
-    // TODO: delete this comment if not needed
-    // private String nctNumber;
-    // private String eudraCTNumber;
-    // private String drksNumber;
-    // private String eudamedNumber;
+
     @ManyToOne
     private Diagnose diagnose;
 
@@ -76,8 +70,6 @@ public class StudyInclusionRequest {
     @Convert(converter = StringListConverter.class)
     @ColumnTransformer(write = "?::jsonb")
     private List<String> supportingVariants;
-    // private Boolean studyRecommendation;
-    // private List<Study> study;
 
     @Column(updatable = false)
     private Instant createdAt;
@@ -86,12 +78,12 @@ public class StudyInclusionRequest {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+        createdAt = Instant.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+        updatedAt = Instant.now();
     }
 
 

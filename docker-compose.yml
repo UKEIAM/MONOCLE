@@ -4,7 +4,7 @@ services:
     container_name: mtb-database
     volumes:
       - mtb-postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Mount the init script
+      - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql  # Mount the init script
       - ./health-care-insurance.json:/docker-entrypoint-initdb.d/health-care-insurance.json  # Mount JSON file
       - ./workflow.json:/docker-entrypoint-initdb.d/workflow.json  # Mount JSON file
     healthcheck:
@@ -16,8 +16,9 @@ services:
       - POSTGRES_DB=${POSTGRES_DB:-mtb}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-insertPassword}
-    ports:
-      - "5432:5432"
+#  # Port should only be visible to the outside if explicitly desired, e.g. to make it easier to view the database.
+#    ports:
+#      - "5432:5432"
 
   mtb-control:
     build:
@@ -32,10 +33,6 @@ services:
       - /opt/mtb/reports:/app/mtb-data/reports
     ports:
       - "${CONTROL_PORT:-8080}:8080"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    networks:
-      - default
     depends_on:
       mtb-database:
         condition: service_healthy
@@ -55,10 +52,6 @@ services:
       - ./config.js:/usr/share/nginx/html/config.js
     ports:
       - "${GUI_PORT:-3000}:80"
-
-networks:
-  default:
-    name: mtb-network
 
 volumes:
   mtb-postgres-data:

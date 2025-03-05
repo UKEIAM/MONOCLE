@@ -60,12 +60,12 @@ public class Requirement {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+    createdAt = Instant.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+    updatedAt = Instant.now();
   }
 
 

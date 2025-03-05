@@ -31,12 +31,8 @@ import org.hibernate.annotations.Where;
 @ToString
 @Entity
 @Table(name = "molecular_pathology_finding")
-// Hibernate will execute the SQL statement specified in the @SQLDelete annotation, which sets the deletedAt field to the current timestamp.
 @SQLDelete(sql = "UPDATE molecular_pathology_finding SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
-// The @Where annotation ensures that Hibernate only retrieves records that have not been marked as deleted.
 @Where(clause = "deleted_at IS NULL")
-//Please note that this approach requires you to handle transactions manually to ensure that the delete() operation is actually executed.
-// You can do this by calling the flush() method on your repository or by using the @Transactional annotation on your service methods.
 public class MolecularPathologyFinding {
 
   @Id
@@ -54,10 +50,6 @@ public class MolecularPathologyFinding {
   @Convert(converter = CodeListConverter.class)
   @ColumnTransformer(write = "?::jsonb")
   private List<Code> typeOfDiagnostic;
-  // Todo: delete this comment if not needed
-//  @Convert(converter = CodeConverter.class)
-//  @ColumnTransformer(write = "?::jsonb")
-//  private Code typeOfDiagnostic;
 
   @Column(updatable = false)
   private Instant createdAt;
@@ -66,12 +58,12 @@ public class MolecularPathologyFinding {
 
   @PrePersist
   protected void onCreate() {
-    createdAt = Instant.now(); // The createdAt field is set to the current timestamp when the entity is persisted
+    createdAt = Instant.now();
   }
 
   @PreUpdate
   protected void onUpdate() {
-    updatedAt = Instant.now(); // The updatedAt field is set to the current timestamp when the entity is updated
+    updatedAt = Instant.now();
   }
 
 }

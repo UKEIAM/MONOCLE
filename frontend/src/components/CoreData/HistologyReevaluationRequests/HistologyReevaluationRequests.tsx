@@ -44,7 +44,6 @@ export function HistologyReevaluationRequests({ selected }: TabProps) {
           setIsOpen(true)
         })
         .catch(() => {
-          // TODO
         })
     } else {
       setEditElement(undefined)
@@ -69,7 +68,6 @@ export function HistologyReevaluationRequests({ selected }: TabProps) {
         setHistologyReevaluationRequests([...data])
       })
       .catch(() => {
-        // TODO
       })
 
     fillSpecimenMap()

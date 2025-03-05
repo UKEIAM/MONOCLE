@@ -41,7 +41,6 @@ public class EpisodeController implements EpisodeApi {
       auditTrailService.addEntry(jwtClaimMap, getCurrentMethodName() + " add for Patient: " + addEpisodeRequestDto.getPatientId());
       EpisodeDto savedEpisodeDto = episodeService.addEpisode(addEpisodeRequestDto.getPatientId(),
               addEpisodeRequestDto.getWorkflowId(), false);
-      // TODO : By Creating a new Episode , copy the old core data of the patient to the new episode
       return ResponseEntity.ok(savedEpisodeDto);
     } catch (ForeignKeyException e) {
       auditTrailService.addEntry(jwtClaimMap, getCurrentMethodName() + " failed with ForeignKeyException");

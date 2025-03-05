@@ -38,7 +38,6 @@ const IHCReportsDialog = ({ open, onClose, specimenLabelsById, editElement }: Pr
     methods.reset({
       episodeId,
       ...editElement,
-      // TODO fill in code.system? here or onSubmit
     })
   }, [open])
   const { IhcReportApi } = useApi()

@@ -63,7 +63,7 @@ export default function NavButtonGroup() {
           </Grid>
           <Grid item>
             <a
-              href={window.config.KC_URL || "https://kcdemo.iam-extern.de/kc/"}
+              href={window.config.KC_URL}
               target={"_blank"}
               style={{ textDecoration: "none" }}
               rel="noreferrer"
@@ -78,7 +78,7 @@ export default function NavButtonGroup() {
           </Grid>
           <Grid item>
             <a
-              href={window.config.BWHC_URL || "https://iam-bwhc.gwis.uke.de/bwhc/"}
+              href={window.config.BWHC_URL}
               target={"_blank"}
               style={{ textDecoration: "none" }}
               rel="noreferrer"
