@@ -1,0 +1,190 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Style the @mui/x-date-pickers/DatePicker globally */
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  width: 100%;
+}
+
+/* Remove bullets from unordered list item in tables */
+td.MuiTableCell-body ul {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
+.MuiDialog-container {
+  .MuiPaper-root {
+    width: 100%;
+    max-width: 800px;
+  }
+}
+
+#step-header a {
+  color: #000;
+  text-decoration: none;
+
+  :active {
+    color: #000;
+  }
+}
+
+@media screen {
+  #print-component {
+    display: none;
+  }
+}
+
+@media print {
+  h3 {
+    color: rgb(0, 73, 146);
+  }
+
+  #print-component {
+    display: block;
+  }
+}
+
+/*Drag and drop component*/
+
+.document-uploader {
+  border: 2px dashed #004992;
+  background-color: #f4fbff;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  max-width: 90vw;
+
+  .upload-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .upload-icon {
+      font-size: 36px;
+      margin-right: 1rem;
+    }
+
+    div {
+      p {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      p:first-child {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    height: 100%;
+    margin-top: 0.5rem;
+    overflow: auto;
+  }
+
+  .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid gray;
+    border-radius: 8px;
+
+    .file-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        color: #333;
+      }
+    }
+
+    .file-actions {
+      cursor: pointer;
+
+      svg {
+        font-size: 18px;
+        color: #888;
+      }
+
+      &:hover {
+        svg {
+          color: #d44;
+        }
+      }
+    }
+
+    &.error-file-ending {
+      border: 1px solid red;
+
+      p,
+      svg {
+        color: red;
+      }
+    }
+  }
+
+  .browse-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    background-color: #004992; /* should be the same as in theme */
+
+    &:hover {
+      text-decoration: none;
+      background-color: #004992b0;
+      box-shadow:
+        0 2px 4px -1px rgba(0, 0, 0, 0.2),
+        0 4px 5px 0 rgba(0, 0, 0, 0.14),
+        0 1px 10px 0 rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  .success-file {
+    display: flex;
+    align-items: center;
+    color: #004992;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  &.drag-over {
+    border-width: 3px;
+    background-color: #d1edfe;
+  }
+}

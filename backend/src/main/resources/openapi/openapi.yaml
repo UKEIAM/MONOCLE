@@ -1,0 +1,6259 @@
+openapi: 3.0.3
+info:
+  title: MTB REST API
+  version: 1.0.0
+  description: REST API of the MTB service.
+tags:
+  - name: patient
+    description: "Endpoints providing information about patients."
+servers:
+  - url: /api
+
+paths:
+  /healthinsurance:
+    post:
+      summary: insert database
+      description: Add new Health Insurance to database.
+      operationId: insertDatabase
+      tags:
+        - healthinsurance
+      requestBody:
+        description: Import database
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/HealthInsurance'
+        required: true
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+        409:
+          description: Unique constraint violated
+    get:
+      summary: Get all Health Insurance entries
+      operationId: getHealthInsurance
+      tags:
+        - healthinsurance
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HealthInsurance'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  /healthinsurance/{id}:
+    get:
+      summary: Get Health Insurance by ID.
+      operationId: getHealthInsuranceByID
+      tags:
+        - healthinsurance
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: long
+          description: The id of the HealthInsurance
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthInsurance'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Health Insurence not found
+  /workflows:
+    post:
+      summary: Add Workflow Schema
+      operationId: addWorkflow
+      tags:
+        - workflow
+      requestBody:
+        description: The Workflow data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Workflow'
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+        409:
+          description: Unique constraint violated
+        500:
+          description: Workflow could not be added to database
+    get:
+      summary: List all available workflows.
+      operationId: getWorkflows
+      tags:
+        - workflow
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Workflow'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  /patients:
+    post:
+      summary: Add new patient to database.
+      description: Add new patient to database.
+      operationId: addPatient
+      tags:
+        - patient
+      requestBody:
+        description: Create a new patient in database.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        400:
+          description: Bad Request - some errors in the sent data
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        409:
+          description: Unique constraint violated
+    get:
+      summary: List all available patients with the latest Episode.
+      operationId: getPatients
+      tags:
+        - patient
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Patient'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  /patients/{id}:
+    get:
+      summary: Get one Patient with the latest Episode.
+      operationId: getPatient
+      tags:
+        - patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Patient
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Patient not found
+    put:
+      summary: Update one patient.
+      operationId: updatePatient
+      tags:
+        - patient
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the patient
+      requestBody:
+        description: The updated patient
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Patient'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Patient'
+        400:
+          description: Bad Request - some errors in the sent data
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Patient not found
+        409:
+          description: Unique constraint violated
+  /episodes:
+    #    get:
+    #      summary: List all available episodes.
+    #      operationId: getEpisodes
+    #      tags:
+    #        - episode
+    #      responses:
+    #        200:
+    #          description: OK
+    #          content:
+    #            application/json:
+    #              schema:
+    #                type: array
+    #                items:
+    #                  $ref: '#/components/schemas/Episode'
+    #        401:
+    #          description: Unauthorized - The provided credentials are unknown
+    #    delete:
+    #      summary: delete all available episodes.
+    #      operationId: deleteEpisodes
+    #      tags:
+    #        - episode
+    #      responses:
+    #        200:
+    #          description: OK
+    #        401:
+    #          description: Unauthorized - The provided credentials are unknown
+    post:
+      summary: Add new episode to database.
+      description: Add new episode to database.
+      operationId: addEpisode
+      tags:
+        - episode
+      requestBody:
+        description: Create a new episode in database.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patientId:
+                  type: string
+                  format: uuid
+                workflowId:
+                  type: integer
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Episode'
+        400:
+          description: Foreign key constraint violated (Patient or Workflow not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+  /episodes/{id}:
+    get:
+      summary: Get one Episode.
+      operationId: getEpisode
+      tags:
+        - episode
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Episode'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+    put:
+      summary: Update one Episode without updating stepInfo.
+      operationId: updateEpisode
+      tags:
+        - episode
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: The updated episode
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Episode'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Episode'
+        400:
+          description: Foreign key constraint violated (Patient or Workflow is not the same as in the saved episode)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+  /episodes/{id}/stepsinfo:
+    get:
+      summary: List all available stepInfo for an episode.
+      operationId: getStepsInfo
+      tags:
+        - stepsinfo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StepInfo'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+    put:
+      summary: Change Steps Info for an episode.
+      description: Change Steps Info for an episode.
+      operationId: updateStepsInfo
+      tags:
+        - stepsinfo
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: Change Steps Info for an episode.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/StepInfo'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StepInfo'
+        400:
+          description: Foreign key constraint violated (Patient or Workflow not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+  /episodes/{episodeId}/presentations:
+    post:
+      summary: add presentation for an episode.
+      description: add presentations for an episode.
+      operationId: addPresentation
+      tags:
+        - presentation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add presentation date for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Presentation'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Presentation'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+        409:
+          description: Presentation for the given Episode with the given date already exists
+    get:
+      summary: List all available presentations for an episode.
+      operationId: getAllPresentations
+      tags:
+        - presentation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Presentation'
+        400:
+          description: Foreign key constraint violated (Episode is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: presentation not found
+
+  /episodes/{episodeId}/presentations/{presentationId}:
+    get:
+      summary: get presentation information for a specific presentationId.
+      operationId: getPresentation
+      tags:
+        - presentation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: presentationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the presentation
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Presentation'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Presentation not found
+        409:
+          description: Presentation for the given Episode with the given date already exists
+
+    put:
+      summary: Change presentation for an episode.
+      description: Change presentations for an episode.
+      operationId: updatePresentation
+      tags:
+        - presentation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: presentationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the presentation
+      requestBody:
+        description: Change presentation for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Presentation'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Presentation'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Presentation not found
+        405:
+          description: Invalid Input
+    delete:
+      summary: Delete Presentation for an episode.
+      description: Delete Presentation for an episode.
+      operationId: deletePresentation
+      tags:
+        - presentation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: presentationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the presentation
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Presentation not found
+
+
+
+  /episodes/{episodeId}/diagnoses:
+
+    post:
+      summary: add diagnose for an episode.
+      description: add diagnose for an episode.
+      operationId: addDiagnose
+      tags:
+        - diagnose
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add diagnose for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diagnose'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnose'
+        400:
+          description: Bad Request - Foreign key constraint violated (EpisodeId or one of histologyResultId not found) or invalid germline diagnose
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+
+    get:
+      summary: List all available diagnoses for an episode.
+      operationId: getAllDiagnoses
+      tags:
+        - diagnose
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Diagnose'
+        400:
+          description: Foreign key constraint violated (Episode is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+
+  /episodes/{episodeId}/diagnoses/{diagnoseId}:
+
+    get:
+      summary: get Diagnose information for a specific presentationId.
+      operationId: getDiagnose
+      tags:
+        - diagnose
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: diagnoseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the diagnose
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnose'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Diagnose not found
+
+    put:
+      summary: Change diagnose for an episode.
+      description: Change diagnose for an episode.
+      operationId: updateDiagnose
+      tags:
+        - diagnose
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: diagnoseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Diagnose
+      requestBody:
+        description: Change Diagnose for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Diagnose'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Diagnose'
+        400:
+          description: Bad Request - Foreign key constraint violated (Provided Episode does not match the one associated with the Diagnose) or invalid germline diagnose
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Diagnose not found
+
+    delete:
+      summary: Delete diagnose for an episode.
+      description: Delete diagnose for an episode.
+      operationId: deleteDiagnose
+      tags:
+        - diagnose
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: diagnoseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Diagnose
+      responses:
+        200:
+          description: OK
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Diagnose not found
+        409:
+          description: Conflict - referenced somewhere else
+
+  /episodes/{episodeId}/specimens:
+
+    post:
+      summary: add specimen for an episode.
+      description: add specimen for an episode.
+      operationId: addSpecimen
+      tags:
+        - specimen
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add specimen for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specimen'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specimen'
+        400:
+          description: Foreign key constraint violated (EpisodeId not found) or body and path EpisodeId variables do not match
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        # 409:
+        #   description: Diagnose for the given Episode with the given date already exists
+
+    get:
+      summary: List all available specimens for an episode.
+      operationId: getAllSpecimens
+      tags:
+        - specimen
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Specimen'
+        400:
+          description: Foreign key constraint violated (Episode is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  #        404:
+  #          description: Specimen not found
+
+
+  /episodes/{episodeId}/specimens/{specimenId}:
+
+    get:
+      summary: get specimen information for a specific specimenId.
+      operationId: getSpecimen
+      tags:
+        - specimen
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: specimenId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Specimen
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specimen'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Specimen not found
+    #        409:
+    #          description: Specimen for the given Episode with the given date already exists
+
+    put:
+      summary: Change specimen for an episode.
+      description: Change specimen for an episode.
+      operationId: updateSpecimen
+      tags:
+        - specimen
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: specimenId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Specimen
+      requestBody:
+        description: Change Specimen for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specimen'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Specimen'
+        400:
+          description: Foreign key constraint violated (Provided Episode does not match the one associated with the Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Specimen not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete specimen for an episode.
+      description: Delete specimen for an episode.
+      operationId: deleteSpecimen
+      tags:
+        - specimen
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: specimenId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Specimen
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Specimen not found
+
+
+  /episodes/{episodeId}/histologyreports:
+
+    post:
+      summary: add histology report for an episode.
+      description: add histology report for an episode.
+      operationId: addHistologyReport
+      tags:
+        - histology_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add histology report for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistologyReport'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistologyReport'
+        400:
+          description: Foreign key constraint violated (Check episodeId and specimen in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+        # 409:
+        #   description: Diagnose for the given Episode with the given date already exists
+
+    get:
+      summary: List all available histology reports for an episode.
+      operationId: getAllHistologyReports
+      tags:
+        - histology_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistologyReport'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  #        404:
+  #          description: Histologyreport not found
+
+
+  /episodes/{episodeId}/histologyreports/{histologyReportId}:
+
+    get:
+      summary: get histology report information for a specific specimenId.
+      operationId: getHistologyReport
+      tags:
+        - histology_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: histologyReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the histology report
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistologyReport'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Histology report not found
+
+    put:
+      summary: Change histology report for an episode.
+      description: Change histologyReport for an episode.
+      operationId: updateHistologyReport
+      tags:
+        - histology_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: histologyReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Histology report
+      requestBody:
+        description: Change Histology report for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistologyReport'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistologyReport'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Histology report not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete histology report for an episode.
+      description: Delete histology report for an episode.
+      operationId: deleteHistologyReport
+      tags:
+        - histology_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: histologyReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the histology report
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Histology report not found
+
+  /episodes/{episodeId}/ihcReports:
+
+    post:
+      summary: add ihcReport to an episode.
+      description: add ihcReport to an episode.
+      operationId: addIhcReport
+      tags:
+        - ihcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add ihcReport to an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IhcReport'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IhcReport'
+        400:
+          description: Foreign key constraint violated (EpisodeId not found) or body and path EpisodeId variables do not match
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+    get:
+      summary: List all available ihcReports for an episode.
+      operationId: getAllIhcReports
+      tags:
+        - ihcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/IhcReport'
+        400:
+          description: Foreign key constraint violated (Episode is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+
+
+  /episodes/{episodeId}/ihcReports/{ihcReportId}:
+
+    get:
+      summary: get ihcReport by episodeId & ihcReportId.
+      operationId: getIhcReport
+      tags:
+        - ihcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ihcReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the ihcReport
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IhcReport'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ihcReport not found
+
+    put:
+      summary: Change ihcReport for an episode.
+      description: Change ihcReport for an episode.
+      operationId: updateIhcReport
+      tags:
+        - ihcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ihcReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the ihcReport
+      requestBody:
+        description: Change ihcReport for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IhcReport'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IhcReport'
+        400:
+          description: Foreign key constraint violated (Provided Episode does not match the one associated with the Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ihcReport not found
+
+    delete:
+      summary: Delete ihcReport for an episode.
+      description: Delete ihcReport for an episode.
+      operationId: deleteIhcReport
+      tags:
+        - ihcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ihcReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the ihcReport
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ihcReport not found
+
+  /episodes/{episodeId}/guidelinetherapies:
+
+    post:
+      summary: add guideline therapy for an episode.
+      description: add guideline therapy for an episode.
+      operationId: addGuidelineTherapy
+      tags:
+        - guideline_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add guideline therapy for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuidelineTherapy'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuidelineTherapy'
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        409:
+          description: Conflict - Last Guideline Therapy for the given Episode already exists
+    get:
+      summary: List all available guideline therapies for an episode.
+      operationId: getAllGuidelineTherapies
+      tags:
+        - guideline_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GuidelineTherapy'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/guidelinetherapies/{guidelineTherapyId}:
+
+    get:
+      summary: get guideline therapy for a specific guidelineTherapyId.
+      operationId: getGuidelineTherapy
+      tags:
+        - guideline_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: guidelineTherapyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the guide line therapy
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuidelineTherapy'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Guideline therapy not found
+
+    put:
+      summary: Change guideline therapy for an episode.
+      description: Change guideline therapy  for an episode.
+      operationId: updateGuidelineTherapy
+      tags:
+        - guideline_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: guidelineTherapyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the Guideline therapy
+      requestBody:
+        description: Change Guideline therapy for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuidelineTherapy'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GuidelineTherapy'
+        400:
+          description: Bad Request
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Guideline Therapy not found
+
+    delete:
+      summary: Delete guideline therapy for an episode.
+      description: Delete guideline therapy for an episode.
+      operationId: deleteGuidelineTherapy
+      tags:
+        - guideline_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: guidelineTherapyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the guideline therapy
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Guideline therapy not found
+
+
+  /episodes/{episodeId}/molecularpathologyfindings:
+
+    post:
+      summary: add molecular pathology finding for an episode.
+      description: add molecular pathology finding for an episode.
+      operationId: addMolecularPathologyFinding
+      tags:
+        - molecular_pathology_finding
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add molecular pathology finding for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MolecularPathologyFinding'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularPathologyFinding'
+        400:
+          description: Foreign key constraint violated (Check episodeId and specimen in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all molecular pathology findings for an episode.
+      operationId: getAllMolecularPathologyFindings
+      tags:
+        - molecular_pathology_finding
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MolecularPathologyFinding'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/molecularpathologyfindings/{molecularPathologyFindingId}:
+
+    get:
+      summary: get molecular pathology finding for a specific molecularPathologyFindingId.
+      operationId: getMolecularPathologyFinding
+      tags:
+        - molecular_pathology_finding
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularPathologyFindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecular pathology finding
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularPathologyFinding'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Molecular pathology finding not found
+
+    put:
+      summary: Change molecular pathology finding for an episode.
+      description: Change molecular pathology finding for an episode.
+      operationId: updateMolecularPathologyFinding
+      tags:
+        - molecular_pathology_finding
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularPathologyFindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecular pathology finding
+      requestBody:
+        description: Change molecular pathology finding for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MolecularPathologyFinding'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularPathologyFinding'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Molecular pathology finding not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete molecular pathology finding for an episode.
+      description: Delete molecular pathology finding for an episode.
+      operationId: deleteMolecularPathologyFinding
+      tags:
+        - molecular_pathology_finding
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularPathologyFindingId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecular pathology finding
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Molecular pathology finding not found
+
+  /episodes/{episodeId}/familymemberdiagnosis:
+
+    post:
+      summary: add family member diagnosis for an episode.
+      description: add family member diagnosis for an episode.
+      operationId: addFamilyMemberDiagnosis
+      tags:
+        - family_member_diagnosis
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add family member diagnosis for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyMemberDiagnosis'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMemberDiagnosis'
+        400:
+          description: Foreign key constraint violated (Check episodeId and specimen in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all family member diagnosis for an episode.
+      operationId: getAllFamilyMemberDiagnosis
+      tags:
+        - family_member_diagnosis
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FamilyMemberDiagnosis'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/familymemberdiagnosis/{familyMemberDiagnosisId}:
+
+    get:
+      summary: get family member diagnosis for a specific familyMemberDiagnosisId.
+      operationId: getFamilyMemberDiagnosis
+      tags:
+        - family_member_diagnosis
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: familyMemberDiagnosisId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the family member diagnosis
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMemberDiagnosis'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: family member diagnosis not found
+
+    put:
+      summary: Change family member diagnosis for an episode.
+      description: Change family member diagnosis for an episode.
+      operationId: updateFamilyMemberDiagnosis
+      tags:
+        - family_member_diagnosis
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: familyMemberDiagnosisId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the family member diagnosis
+      requestBody:
+        description: Change family member diagnosis for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FamilyMemberDiagnosis'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FamilyMemberDiagnosis'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: family member diagnosis not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete family member diagnosis for an episode.
+      description: Delete family member diagnosis for an episode.
+      operationId: deleteFamilyMemberDiagnosis
+      tags:
+        - family_member_diagnosis
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: familyMemberDiagnosisId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of family member diagnosis
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: family member diagnosis not found
+
+
+  /episodes/{episodeId}/ecogstatus:
+
+    post:
+      summary: add ecog status for an episode.
+      description: add ecog status for an episode.
+      operationId: addEcogStatus
+      tags:
+        - ecog_status
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add ecog status for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EcogStatus'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EcogStatus'
+        400:
+          description: Foreign key constraint violated (Check episodeId and specimen in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all ecog status for an episode.
+      operationId: getAllEcogStatus
+      tags:
+        - ecog_status
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EcogStatus'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/ecogstatus/{ecogStatusId}:
+
+    get:
+      summary: get ecog status for a specific ecogStatusId.
+      operationId: getEcogStatus
+      tags:
+        - ecog_status
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ecogStatusId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the ecog status
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EcogStatus'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ecog status not found
+
+    put:
+      summary: Change ecog status for an episode.
+      description: Change ecog status for an episode.
+      operationId: updateEcogStatus
+      tags:
+        - ecog_status
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ecogStatusId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the ecog status
+      requestBody:
+        description: Change ecog status for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EcogStatus'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EcogStatus'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ecog status not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete ecog status for an episode.
+      description: Delete ecog status for an episode.
+      operationId: deleteEcogStatus
+      tags:
+        - ecog_status
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ecogStatusId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of ecog status
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ecog status not found
+
+  /episodes/{episodeId}/rebiopsyrequests:
+
+    post:
+      summary: add rebiopsy request for an episode.
+      description: add rebiopsy request for an episode.
+      operationId: addRebiopsyRequest
+      tags:
+        - rebiopsy_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add rebiopsy request for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RebiopsyRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RebiopsyRequest'
+        400:
+          description: Foreign key constraint violated (Check episodeId and specimen in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all rebiopsy request for an episode.
+      operationId: getAllRebiopsyRequests
+      tags:
+        - rebiopsy_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RebiopsyRequest'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/rebiopsyrequests/{rebiopsyRequestId}:
+
+    get:
+      summary: get rebiopsy request for a specific rebiopsyRequestId.
+      operationId: getRebiopsyRequest
+      tags:
+        - rebiopsy_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: rebiopsyRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the rebiopsy request
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RebiopsyRequest'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: rebiopsy request not found
+
+    put:
+      summary: Change rebiopsy request for an episode.
+      description: Change rebiopsy request for an episode.
+      operationId: updateRebiopsyRequest
+      tags:
+        - rebiopsy_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: rebiopsyRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the rebiopsy request
+      requestBody:
+        description: Change rebiopsy request for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RebiopsyRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RebiopsyRequest'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: rebiopsy request not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete rebiopsy request for an episode.
+      description: Delete rebiopsy request for an episode.
+      operationId: deleteRebiopsyRequest
+      tags:
+        - rebiopsy_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: rebiopsyRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of rebiopsy request
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: rebiopsy request not found
+
+
+  /episodes/{episodeId}/histologyreevaluationrequests:
+
+    post:
+      summary: add histology reevaluation requests for an episode.
+      description: add histology reevaluation requests for an episode.
+      operationId: addHistologyReevaluationRequest
+      tags:
+        - histology_reevaluation_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add histology reevaluation requests for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistologyReevaluationRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistologyReevaluationRequest'
+        400:
+          description: Foreign key constraint violated (Check episodeId and specimen in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all histology reevaluation requests for an episode.
+      operationId: getAllHistologyReevaluationRequests
+      tags:
+        - histology_reevaluation_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/HistologyReevaluationRequest'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/histologyreevaluationrequests/{histologyReevaluationRequestId}:
+
+    get:
+      summary: get histology reevaluation requests for a specific histologyReevaluationRequestId.
+      operationId: getHistologyReevaluationRequest
+      tags:
+        - histology_reevaluation_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: histologyReevaluationRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the histology reevaluation requests
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistologyReevaluationRequest'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: histology reevaluation requests not found
+
+    put:
+      summary: Change histology reevaluation requests for an episode.
+      description: Change histology reevaluation requests for an episode.
+      operationId: updateHistologyReevaluationRequest
+      tags:
+        - histology_reevaluation_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: histologyReevaluationRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the histology reevaluation requests
+      requestBody:
+        description: Change histology reevaluation requests for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HistologyReevaluationRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistologyReevaluationRequest'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and Specimen)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: histology reevaluation requests not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete histology reevaluation requests for an episode.
+      description: Delete histology reevaluation requests for an episode.
+      operationId: deleteHistologyReevaluationRequest
+      tags:
+        - histology_reevaluation_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: histologyReevaluationRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of histology reevaluation requests
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: histology reevaluation requests not found
+
+  /episodes/{episodeId}/studyinclusionrequests:
+
+    post:
+      summary: add study inclusion request for an episode.
+      description: add study inclusion request for an episode.
+      operationId: addStudyInclusionRequest
+      tags:
+        - study_inclusion_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add study inclusion request for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudyInclusionRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyInclusionRequest'
+        400:
+          description: Foreign key constraint violated (Check episodeId and reason (diagnoseId) in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all study inclusion requests for an episode.
+      operationId: getAllStudyInclusionRequests
+      tags:
+        - study_inclusion_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StudyInclusionRequest'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/studyinclusionrequests/{studyInclusionRequestId}:
+
+    get:
+      summary: get study inclusion request for a specific StudyInclusionRequestId.
+      operationId: getStudyInclusionRequest
+      tags:
+        - study_inclusion_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: studyInclusionRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the study inclusion request
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyInclusionRequest'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: study inclusion request not found
+
+    put:
+      summary: Change study inclusion request for an episode.
+      description: Change study inclusion request for an episode.
+      operationId: updateStudyInclusionRequest
+      tags:
+        - study_inclusion_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: studyInclusionRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the study inclusion request
+      requestBody:
+        description: Change study inclusion request for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StudyInclusionRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyInclusionRequest'
+        400:
+          description: Foreign key constraint violated (Check EpisodeId and reason)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: study inclusion request not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete study inclusion request for an episode.
+      description: Delete study inclusion request for an episode.
+      operationId: deleteStudyInclusionRequest
+      tags:
+        - study_inclusion_request
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: studyInclusionRequestId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of study inclusion request
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: study inclusion request not found
+
+
+
+  /episodes/{episodeId}/therapyrecommendations:
+
+    post:
+      summary: add therapy recommendation for an episode.
+      description: add therapy recommendation for an episode.
+      operationId: addTherapyRecommendation
+      tags:
+        - therapy_recommendation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add therapy recommendation for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TherapyRecommendation'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TherapyRecommendation'
+        400:
+          description: Foreign key constraint violated (Check episodeId, diagnosis and NgsReport in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all therapy recommendations for an episode.
+      operationId: getAllTherapyRecommendations
+      tags:
+        - therapy_recommendation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TherapyRecommendation'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/therapyrecommendations/{therapyRecommendationId}:
+
+    get:
+      summary: get therapy recommendation for a specific therapyRecommendationId.
+      operationId: getTherapyRecommendation
+      tags:
+        - therapy_recommendation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: therapyRecommendationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the therapy recommendation
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TherapyRecommendation'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: therapy recommendation not found
+
+    put:
+      summary: Change therapy recommendation for an episode.
+      description: Change therapy recommendation for an episode.
+      operationId: updateTherapyRecommendation
+      tags:
+        - therapy_recommendation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: therapyRecommendationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the therapy recommendation
+      requestBody:
+        description: Change therapy recommendation for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TherapyRecommendation'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TherapyRecommendation'
+        400:
+          description: Foreign key constraint violated (Check episodeId, diagnosis and NgsReport)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: therapy recommendation not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete therapy recommendation for an episode.
+      description: Delete therapy recommendation for an episode.
+      operationId: deleteTherapyRecommendation
+      tags:
+        - therapy_recommendation
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: therapyRecommendationId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of therapy recommendation
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: therapy recommendation not found
+
+
+
+  /episodes/{episodeId}/claims:
+
+    post:
+      summary: add claim for an episode.
+      description: add claim for an episode.
+      operationId: addClaim
+      tags:
+        - claim
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add claim for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Claim'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+        400:
+          description: Foreign key constraint violated (Check episodeId and therapy in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all claims for an episode.
+      operationId: getAllClaims
+      tags:
+        - claim
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Claim'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/claims/{claimId}:
+
+    get:
+      summary: get claim for a specific claimId.
+      operationId: getClaim
+      tags:
+        - claim
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: claimId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the claim
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: claim not found
+
+    put:
+      summary: Change claim for an episode.
+      description: Change claim for an episode.
+      operationId: updateClaim
+      tags:
+        - claim
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: claimId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the claim
+      requestBody:
+        description: Change claim for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Claim'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+        400:
+          description: Foreign key constraint violated (Check episodeId and therapy in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: claim not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete claim for an episode.
+      description: Delete claim for an episode.
+      operationId: deleteClaim
+      tags:
+        - claim
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: claimId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of claim
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: claim not found
+
+
+
+  /episodes/{episodeId}/claimresponses:
+
+    post:
+      summary: add claim response for an episode.
+      description: add claim response for an episode.
+      operationId: addClaimResponse
+      tags:
+        - claim_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add claim response for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimResponse'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponse'
+        400:
+          description: Foreign key constraint violated (Check episodeId and claim in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Not Found
+    get:
+      summary: List all claim responses for an episode.
+      operationId: getAllClaimResponses
+      tags:
+        - claim_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClaimResponse'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/claimresponses/{claimResponseId}:
+
+    get:
+      summary: get claim response for a specific claimResponseId.
+      operationId: getClaimResponse
+      tags:
+        - claim_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: claimResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the claim response
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponse'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: claim response not found
+
+    put:
+      summary: Change claim response for an episode.
+      description: Change claim response for an episode.
+      operationId: updateClaimResponse
+      tags:
+        - claim_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: claimResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the claim response
+      requestBody:
+        description: Change claim response for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimResponse'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClaimResponse'
+        400:
+          description: Foreign key constraint violated (Check episodeId and claim in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: claim response not found
+
+    delete:
+      summary: Delete claim response for an episode.
+      description: Delete claim response for an episode.
+      operationId: deleteClaimResponse
+      tags:
+        - claim_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: claimResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of claim response
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: claim response not found
+
+
+  /episodes/{episodeId}/careplans:
+
+    post:
+      summary: add care plan for an episode.
+      description: add care plan for an episode.
+      operationId: addCarePlan
+      tags:
+        - care_plan
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add care plan for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarePlan'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarePlan'
+        400:
+          description: Bad Request - Foreign key constraint violated (Check episodeId, diagnosis, recommendations, geneticCounsellingRequest,
+            rebiopsyRequests and studyInclusionRequests in your request) or The given episode Id in the body is not the same as in the path
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+    get:
+      summary: List all care plans for an episode.
+      operationId: getAllCarePlans
+      tags:
+        - care_plan
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CarePlan'
+        400:
+          description: Bad Request - Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/careplans/{carePlanId}:
+
+    get:
+      summary: get care plan for a specific carePlanId.
+      operationId: getCarePlan
+      tags:
+        - care_plan
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: carePlanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the care plan
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarePlan'
+        400:
+          description: Bad Request - Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Not Found - Care plan could not be found
+
+    put:
+      summary: Change care plan for an episode.
+      description: Change care plan for an episode.
+      operationId: updateCarePlan
+      tags:
+        - care_plan
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: carePlanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the care plan
+      requestBody:
+        description: Change care plan for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CarePlan'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarePlan'
+        400:
+          description: Foreign key constraint violated (Check episodeId, diagnosis, recommendations, geneticCounsellingRequest,
+            rebiopsyRequests and studyInclusionRequests in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Not Found - Care plan not found
+
+    delete:
+      summary: Delete care plan for an episode.
+      description: Delete care plan for an episode.
+      operationId: deleteCarePlan
+      tags:
+        - care_plan
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: carePlanId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of care plan
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Not Found - Care plan not found
+
+
+  /episodes/{episodeId}/moleculartherapies:
+
+    post:
+      summary: add molecularTherapy for an episode.
+      description: add molecularTherapy for an episode.
+      operationId: addMolecularTherapy
+      tags:
+        - molecular_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add molecularTherapy for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MolecularTherapy'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularTherapy'
+        400:
+          description: Bad Request - Foreign key constraint violated or episodeId not equal
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+    get:
+      summary: List all moleculartherapies for an episode.
+      operationId: getAllMolecularTherapies
+      tags:
+        - molecular_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MolecularTherapy'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/moleculartherapies/{molecularTherapyId}:
+
+    get:
+      summary: get molecularTherapy for a specific molecularTherapyId.
+      operationId: getMolecularTherapy
+      tags:
+        - molecular_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularTherapyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecularTherapy
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularTherapy'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: molecularTherapy not found
+
+    put:
+      summary: Change molecularTherapy for an episode.
+      description: Change molecularTherapy for an episode.
+      operationId: updateMolecularTherapy
+      tags:
+        - molecular_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularTherapyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecularTherapy
+      requestBody:
+        description: Change molecularTherapy for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MolecularTherapy'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularTherapy'
+        400:
+          description: Foreign key constraint violated or episodeID not euqal
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: molecularTherapy not found
+
+    delete:
+      summary: Delete molecularTherapy for an episode.
+      description: Delete molecularTherapy for an episode.
+      operationId: deleteMolecularTherapy
+      tags:
+        - molecular_therapy
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularTherapyId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of molecularTherapy
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: molecularTherapy not found
+        409:
+          description: Conflict
+
+
+  /episodes/{episodeId}/moleculartherapyresponses:
+
+    post:
+      summary: add molecularTherapyResponse for an episode.
+      description: add molecularTherapyResponse for an episode.
+      operationId: addMolecularTherapyResponse
+      tags:
+        - molecular_therapy_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add molecularTherapyResponse for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MolecularTherapyResponse'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularTherapyResponse'
+        400:
+          description: Foreign key constraint violated (Check episodeId and therapyRecommendation 'basedOn' in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all moleculartherapyresponses for an episode.
+      operationId: getAllMolecularTherapyResponses
+      tags:
+        - molecular_therapy_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MolecularTherapyResponse'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/moleculartherapyresponses/{molecularTherapyResponseId}:
+
+    get:
+      summary: get molecularTherapyResponse for a specific molecularTherapyResponseId.
+      operationId: getMolecularTherapyResponse
+      tags:
+        - molecular_therapy_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularTherapyResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecularTherapyResponse
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularTherapyResponse'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: molecularTherapyResponse not found
+
+    put:
+      summary: Change molecularTherapyResponse for an episode.
+      description: Change molecularTherapyResponse for an episode.
+      operationId: updateMolecularTherapyResponse
+      tags:
+        - molecular_therapy_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularTherapyResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the molecularTherapyResponse
+      requestBody:
+        description: Change molecularTherapyResponse for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MolecularTherapyResponse'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MolecularTherapyResponse'
+        400:
+          description: Foreign key constraint violated (Check episodeId and therapyRecommendation 'basedOn' in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: molecularTherapyResponse not found
+        405:
+          description: Invalid Input
+
+    delete:
+      summary: Delete molecularTherapyResponse for an episode.
+      description: Delete molecularTherapyResponse for an episode.
+      operationId: deleteMolecularTherapyResponse
+      tags:
+        - molecular_therapy_response
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: molecularTherapyResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of molecularTherapyResponse
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: molecularTherapyResponse not found
+
+
+
+  /episodes/{episodeId}/ngsreports:
+
+    post:
+      summary: add ngs report for an episode.
+      description: add ngs report for an episode.
+      operationId: addNgsReport
+      tags:
+        - ngs_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: add ngs report for an episode.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NgsReport'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NgsReport'
+        400:
+          description: Foreign key constraint violated (Check episodeId and reason (diagnoseId) in your request)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input (The given episode Id in the body is not the same as in the path)
+    get:
+      summary: List all ngs reports for an episode.
+      operationId: getAllNgsReports
+      tags:
+        - ngs_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NgsReport'
+        400:
+          description: Foreign key constraint violated (Episode not found)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+  /episodes/{episodeId}/ngsreports/{ngsReportId}:
+
+    get:
+      summary: get ngs report for a specific NgsReportId.
+      operationId: getNgsReport
+      tags:
+        - ngs_report
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: ngsReportId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The id of the ngs report
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NgsReport'
+        400:
+          description: Foreign key constraint violated (Episode not found or is not the same as the saved in the database)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: ngs report not found
+
+#    put:
+#      summary: Change ngs report for an episode.
+#      description: Change ngs report for an episode.
+#      operationId: updateNgsReport
+#      tags:
+#        - ngs_report
+#      parameters:
+#        - name: episodeId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#          description: The id of the episode
+#        - name: ngsReportId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#          description: The id of the ngs report
+#      requestBody:
+#        description: Change ngs report for an episode.
+#        content:
+#          application/json:
+#            schema:
+#              $ref: '#/components/schemas/NgsReport'
+#        required: true
+#      responses:
+#        200:
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/NgsReport'
+#        400:
+#          description: Foreign key constraint violated (Check EpisodeId and reason)
+#        401:
+#          description: Unauthorized - The provided credentials are unknown
+#        404:
+#          description: ngs report not found
+#        405:
+#          description: Invalid Input
+#
+#    delete:
+#      summary: Delete ngs report for an episode.
+#      description: Delete ngs report for an episode.
+#      operationId: deleteNgsReport
+#      tags:
+#        - ngs_report
+#      parameters:
+#        - name: episodeId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#            format: uuid
+#          description: The id of the episode
+#        - name: ngsReportId
+#          in: path
+#          required: true
+#          schema:
+#            type: string
+#          description: The id of ngs report
+#      responses:
+#        200:
+#          description: OK
+#        401:
+#          description: Unauthorized - The provided credentials are unknown
+#        404:
+#          description: ngs report not found
+
+
+  /episodes/{episodeId}/requirements:
+    post:
+      summary: Add new requirement to database.
+      description: Add new requirement to database.
+      operationId: addRequirement
+      tags:
+        - requirement
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      requestBody:
+        description: Create a new requirement in database.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Requirement'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Requirement'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+        405:
+          description: Invalid Input
+        409:
+          description: Unique constraint violated (Requirement for the given Episode already exists)
+  /episodes/{episodeId}/requirements/{id}:
+    get:
+      summary: Get requirement of an episode.
+      operationId: getRequirement
+      tags:
+        - requirement
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the requirement
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Requirement'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Requirement not found
+    put:
+      summary: Update requirement of an episode.
+      operationId: updateRequirement
+      tags:
+        - requirement
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the requirement
+      requestBody:
+        description: The updated requirement
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Requirement'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Requirement'
+        400:
+          description: Foreign key constraint violated (Episode not found or RequirementId is not the same as in the saved requirement)
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Requirement not found
+        409:
+          description: Unique constraint violated (RequirementId is not the same as in the saved requirement)
+  /labnumbers:
+    post:
+      summary: Add new LabNumber Entry to the database.
+      description: Add new lab number.
+      operationId: addLabNumber
+      tags:
+        - lab_number
+      requestBody:
+        description: Create a new Entry of labNumber database.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LabNumber'
+        required: true
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Patient not found
+        405:
+          description: Invalid Input (LabNumberId ist already assigned to another patient)
+    get:
+      summary: Get all LabNumber entries
+      operationId: getLabNumbers
+      tags:
+        - lab_number
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LabNumber'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  /labnumbers/{labNumberId}:
+    get:
+      summary: Get LabNumber Entry.
+      operationId: getLabNumber
+      tags:
+        - lab_number
+      parameters:
+        - name: labNumberId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The labnumber indentifer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LabNumber'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: LabNumber not found
+  /labnumbers/{labNumberId}/checkLabNumber:
+    get:
+      summary: Checks if LabNumber is already assigned.
+      operationId: isLabNumberExists
+      tags:
+        - lab_number
+      parameters:
+        - name: labNumberId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The labnumber indentifer
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: boolean
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: LabNumber not found
+  /comments:
+    post:
+      summary: Add new comment to patient.
+      description: Add new comment to patient.
+      operationId: addComment
+      tags:
+        - comments
+      parameters:
+        - name: patientId
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the patient
+      requestBody:
+        description: Add new comment to patient.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+        required: true
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Patient not found
+        405:
+          description: Invalid Input
+    get:
+      summary: List all available comments.
+      operationId: getComments
+      tags:
+        - comments
+      parameters:
+        - name: patientId
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: The id of the patient
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+  /comments/{commentId}:
+    put:
+      summary: Update comment by comment-id.
+      operationId: updateComment
+      tags:
+        - comments
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the comment
+      requestBody:
+        description: The updated comment
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Foreign key constraint violated
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Comment not found
+        409:
+          description: Unique constraint violated
+    delete:
+      summary: delete comment by comment-id.
+      operationId: deleteComment
+      tags:
+        - comments
+      parameters:
+        - name: commentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the comment
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Patient or Comment not found
+        405:
+          description: Invalid Input
+  /addressbook:
+    post:
+      summary: Add new address to database.
+      description: Add new address to database.
+      operationId: addAddressbookEntry
+      tags:
+        - addressbookentry
+      requestBody:
+        description: Create a new address in database.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressbookEntry'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressbookEntry'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+        409:
+          description: Unique constraint violated
+    get:
+      summary: Get all addressbook entries
+      operationId: getAddressbook
+      tags:
+        - addressbookentry
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressbookEntry'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+  /addressbook/{id}:
+    get:
+      summary: Get one addressbook entries
+      operationId: getAddressbookEntry
+      tags:
+        - addressbookentry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the entry
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressbookEntry'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Addressbook Entry not found
+    put:
+      summary: Update an addressbook entry
+      operationId: updateAddressbookEntry
+      tags:
+        - addressbookentry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the entry to update
+      requestBody:
+        description: The updated entry data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressbookEntry'
+      responses:
+        200:
+          description: OK
+        400:
+          description: Foreign key constraint violated
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Entry not found
+        409:
+          description: Unique constraint violated
+    delete:
+      summary: Delete an addressbook entry
+      operationId: deleteAddressbookEntry
+      tags:
+        - addressbookentry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the entry to be deleted
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Addressbook not found
+        405:
+          description: Invalid Input
+  /audittrail:
+    get:
+      summary: Get all audit trail entries
+      operationId: getAuditTrails
+      tags:
+        - audittrailentry
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditTrailEntry'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+
+#  /patients/{id}/transfer/kis:
+#    post:
+#      summary: send a request to transfer patient data to Kis
+#      operationId: transferDataToKis
+#      tags:
+#        - transfer
+#      parameters:
+#        - name: id
+#          in: path
+#          description: ID of patient
+#          required: true
+#          schema:
+#            type: string
+#      responses:
+#        200:
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: '#/components/schemas/TransferStatus'
+#        401:
+#          description: Unauthorized - The provided credentials are unknown
+#        405:
+#          description: Invalid Input
+#        409:
+#          description: Unique constraint violated
+  /bwhcTransfers:
+    post:
+      summary: send a request to transfer patient data
+      operationId: addBwhcTransfer
+      tags:
+        - bwhc_transfer
+      parameters:
+        - name: episodeId
+          in: query
+          description: ID of episode
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferJob'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+        409:
+          description: Unique constraint violated
+#    put:
+#      summary: send a request to change the data of a patient
+#      operationId: editPatientData
+#      tags:
+#        - transfer
+#      parameters:
+#        - name: id
+#          in: path
+#          description: ID of patient
+#          required: true
+#          schema:
+#            type: string
+#      responses:
+#        200:
+#          description: OK
+#        400:
+#          description: Foreign key constraint violated
+#        401:
+#          description: Unauthorized - The provided credentials are unknown
+#        404:
+#          description: Patient not found
+#        409:
+#          description: Unique constraint violated
+  /usersbyusername/{username}:
+    get:
+      summary: Get users by role
+      operationId: getUsersByUsername
+      tags:
+        - keycloakadmin
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The username of the user
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+  /usersbyrole/{rolename}:
+    get:
+      summary: Get users by role
+      operationId: getUsersByRole
+      tags:
+        - keycloakadmin
+      parameters:
+        - name: rolename
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The name of the role
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserList'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Role not found
+  /upload:
+    post:
+      summary: Receive and save files on the file system
+      operationId: uploadFile
+      tags:
+        - upload
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                # 'file' will be the field name in this multipart request
+                file:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        405:
+          description: Invalid Input
+  /version:
+    get:
+      summary: Get the current build version
+      operationId: getVersion
+      tags:
+        - version
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+  /episodes/{episodeId}/kcReports:
+    post:
+      summary: Receive and save KC-Reports on the file system
+      operationId: uploadKcReport
+      tags:
+        - kcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the episode
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                # 'file' will be the field name in this multipart request
+                file:
+                  type: string
+                  format: binary
+                  description: The KC-Report file
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KcReport'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        404:
+          description: Episode not found
+        409:
+          description: Conflict (KC-Report with the same name already exists)
+        415:
+          description: Unsupported Media Type (Only Pdf files allowed)
+    get:
+      summary: Get all relevante information about KC-Reports.
+      operationId: getKcReportsForEpisode
+      tags:
+        - kcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KcReport'
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        403:
+          description: Forbidden
+        404:
+          description: Episode not found
+  /episodes/{episodeId}/kcReports/{kcReportId}:
+    get:
+      summary: get KC-Report with reportId from the file system
+      operationId: getKcReportFile
+      tags:
+        - kcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The id of the episode
+        - name: kcReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the KC-Report
+      responses:
+        200:
+          description: OK
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        404:
+          description: Episode or KcReport not found
+        500:
+          description: Internal Server Error
+    delete:
+      summary: delete KC-Report with reportId from the file system
+      operationId: deleteKcReport
+      tags:
+        - kcReport
+      parameters:
+        - name: episodeId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            description: The id of the episode
+        - name: kcReportId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The ID of the KC-Report
+      responses:
+        200:
+          description: OK
+        401:
+          description: Unauthorized - The provided credentials are unknown
+        404:
+          description: Episode or KcReport not found
+components:
+  schemas:
+    LabNumber:
+      type: object
+      properties:
+        id:
+          type: string
+        specimenLabelling:
+          type: string
+        episodeId:
+          type: string
+          format: uuid
+        assigned:
+          type: boolean
+        assignedOn:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+    AddressbookEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        email:
+          type: string
+        telephone:
+          type: string
+        fax:
+          type: string
+        weburl:
+          type: string
+        street:
+          type: string
+        streetnumber:
+          type: string
+        plz:
+          type: string
+        location:
+          type: string
+        ukeinternal:
+          type: boolean
+        addressbookEntryType:
+          type: string
+          enum: [ PATHOLOGIE, ZUWEISER, SONSTIGES ]
+        createdAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        deletedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+    AuditTrailEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        dateOfEntry:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        userId:
+          type: string
+        entry:
+          type: string
+    Patient:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        soarianId:
+          type: string
+        workflowId:
+          type: string
+          format: integer
+        createdAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        deletedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        firstName:
+          type: string
+        surname:
+          type: string
+        gender:
+          $ref: "#/components/schemas/GenderType"
+        dateOfBirth:
+          type: string
+          format: date
+          example: '2020-05-25'
+        dateOfDeath:
+          type: string
+          format: date
+          example: '2020-05-25'
+        municipalityKey:
+          type: string
+          example: "12345"
+        consent:
+          type: boolean
+        healthInsurance:
+          type: string
+          format: long
+        episodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Episode'
+      required:
+        - soarianId
+        - consent
+    #    PatientWithLastEpisode:
+    #      allOf:
+    #        - $ref: '#/components/schemas/Patient'
+    #        - properties:
+    #            lastEpisode:
+    #              $ref: '#/components/schemas/Episode'
+    Presentation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        dateOfPresentation:
+          type: string
+          format: date
+          example: '2020-05-27'
+        episodeId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        deletedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+      required:
+        - dateOfPresentation
+        - episodeId
+    Requirement:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        recommended:
+          type: boolean
+        internDiagnostic:
+          type: boolean
+        moleculareDiagnostic:
+          type: boolean
+        ngs:
+          type: boolean
+        ngsType:
+          type: string
+          enum: [ NGS 500 Panel, RNA Panel, Exom, Transkriptom ]
+        standard:
+          type: boolean
+        standardType:
+          type: string
+          enum: [ Sanger, RT-PCR, q-PCR ]
+        others:
+          type: boolean
+        othersType:
+          type: string
+          enum: [ Multiplex IHC, Methylierungsanalytik ]
+        comment:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'
+    PatientWithEpisodes:
+      allOf:
+        - $ref: '#/components/schemas/Patient'
+        - type: array
+          items:
+            $ref: '#/components/schemas/Episode'
+    Workflow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: integer
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Step'
+      required:
+        - id
+    Episode:
+      properties:
+        id:
+          type: string
+          format: uuid
+        patientId:
+          type: string
+          format: uuid
+        requirementId:
+          type: string
+          format: uuid
+        report:
+          type: string
+        decision:
+          type: string
+        stepInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/StepInfo'
+        createdAt:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2017-07-21T17:32:28Z'
+        workflowId:
+          type: string
+          format: integer
+      required:
+        - patientId
+        - workflowId
+    Step:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        skippable:
+          type: boolean
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/Step'
+      required:
+        - id
+        - name
+    StepInfo:
+      type: object
+      properties:
+        stepStatus:
+          $ref: '#/components/schemas/StepStatus'
+        stepId:
+          type: integer
+        episodeId:
+          type: string
+          format: uuid
+    StepStatus:
+      type: string
+      enum: [ PENDING, INCOMPLETE, COMPLETE ]
+    Diagnose:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        recordedOn:
+          type: string
+          format: date
+          example: '2020-05-27'
+        icd10:
+          $ref: '#/components/schemas/Code'
+        icdO3T:
+          $ref: '#/components/schemas/Code'
+        whoGrade:
+          $ref: '#/components/schemas/Code'
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusHistory'
+        guidelineTreatmentStatus:
+          type: string
+          enum: [ "exhausted", "non-exhausted", "impossible",  "no-guidelines-available", "unknown" ]
+        histologyResults:
+          type: array
+          items:
+            type: string
+            format: uuid
+        isGermlineDiagnosisExist:
+          type: boolean
+        germlineDiagnosisIcd10:
+          $ref: '#/components/schemas/Code'
+        hpoIcd10:
+          type: array
+          items:
+            $ref: '#/components/schemas/Code'
+        orphanetCode:
+          $ref: '#/components/schemas/Code'
+        alphaIdSeCode:
+          $ref: '#/components/schemas/Code'
+        tnmKey:
+          $ref: '#/components/schemas/Code'
+        altTumorKey:
+          type: array
+          items:
+            $ref: '#/components/schemas/Code'
+    Code:
+      type: object
+      properties:
+        code:
+          type: string
+        display:
+          type: string
+        version:
+          type: string
+        system:
+          type: string
+          # enum: [ICD10, ICDO3T, WHO_GRADE]
+    ValueSet:
+      type: object
+      properties:
+        code:
+          type: string
+        system:
+          type: string
+    StatusHistory:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ "tumor-free", "local", "metastasized", "unknown" ]
+        date:
+          type: string
+          format: date
+    Specimen:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        labelling:
+          type: string
+        episodeId:
+          type: string
+          format: uuid
+        icd10:
+          $ref: '#/components/schemas/Code'
+        type:
+          type: string
+          enum: [ "fresh-tissue", "cryo-frozen", "liquid-biopsy", "FFPE", "unknown" ]
+        collection:
+          $ref: '#/components/schemas/SpecimenCollection'
+    SpecimenCollection:
+      type: object
+      properties:
+        localization:
+          type: string
+          enum: [ "primary-tumor", "metastasis" , "unknown", "local-recurrence", "regional-lymph-node", "cellfree-dna" ]
+        date:
+          type: string
+          format: date
+        method:
+          type: string
+          enum: [ "biopsy", "resection", "liquid-biopsy", "cytology", "unknown" ]
+    HistologyReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        tumorMorphology:
+          $ref: '#/components/schemas/TumorMorphology'
+        tumorCellContent:
+          $ref: '#/components/schemas/TumorCellContent'
+        differentiationDegree:
+          $ref: '#/components/schemas/DifferentiationDegree'
+    IhcReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        specimenId:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        journalId:
+          type: string
+        blockId:
+          type: string
+        proteinExpressionResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProteinExpression'
+        msimmrResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProteinExpression'
+    ProteinExpression:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        protein:
+          $ref: "#/components/schemas/Code"
+        value:
+          $ref: "#/components/schemas/Code"
+        tpsScore:
+          type: integer
+          minimum: 0
+          maximum: 100
+        cpsScore:
+          type: integer
+        icScore:
+          $ref: "#/components/schemas/Code"
+        tcScore:
+          $ref: "#/components/schemas/Code"
+    TumorMorphology:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        value:
+          $ref: '#/components/schemas/Code'
+        note:
+          type: string
+    TumorCellContent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        method:
+          type: string
+          enum: [ "histologic", "bioinformatic" ]
+        value:
+          type: number
+          format: float
+    DifferentiationDegree:
+      type: string
+      enum: ["0", "1", "2", "3", "4", "5", "X", "L", "M", "H", "B", "U", "T"]
+      description: |
+        Degree of differentiation of the tumour. The possible values and their meanings are:
+        - 0: primär erworbene Melanose ohne zelluläre Atypien (nur beim malignen Melanom der Konjunktiva)
+        - 1: gut differenziert
+        - 2: mäßig differenziert
+        - 3: schlecht differenziert
+        - 4: undifferenziert
+        - 5: nur für C61, TNM8
+        - X: nicht bestimmbar
+        - L: low grade (G1 oder G2)
+        - M: intermediate grade (G2 oder G3)
+        - H: high grade (G3 oder G4)
+        - B: Borderline
+        - U: unbekannt
+        - T: trifft nicht zu
+    InterpretationFindingsObject:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        value:
+          type: number
+          format: float
+        interpretation:
+          $ref: '#/components/schemas/Code'
+    MicroSatelliteInstabilities:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        value:
+          type: number
+          format: float
+        method:
+          $ref: '#/components/schemas/Code'
+        interpretation:
+          $ref: '#/components/schemas/Code'
+    BRCAness:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        value:
+          type: number
+          format: float
+        confidenceRange:
+          $ref: '#/components/schemas/ConfidenceRange'
+    ConfidenceRange:
+      type: object
+      properties:
+        min:
+          type: number
+          format: float
+        max:
+          type: number
+          format: float
+    GuidelineTherapy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        diagnosis:
+          type: string
+          format: uuid
+        therapyLine:
+          type: string
+          format: integer
+        medication:
+          type: array
+          items:
+            $ref: '#/components/schemas/Code'
+        period:
+          $ref: '#/components/schemas/Period'
+        reasonStopped:
+          $ref: '#/components/schemas/ValueSet'
+        procedure:
+          $ref: '#/components/schemas/Code'
+        procedurePosition:
+          type: string
+          enum: ["O", "A", "N", "I", "S"]
+          description: >
+             * `O` - ohne Bezug zur operativen Therapie
+             * `A` - adjuvant
+             * `N` - neoadjuvant
+             * `I` - intraoperativ
+             * `S` - sonstiges
+        intention:
+          type: string
+          enum: ["K", "P", "S", "X"]
+        progressDate:
+          type: string
+          format: date
+        molecularTherapyResponse:
+          type: string
+          format: uuid
+      required:
+        - episodeId
+        - diagnosis
+        - period
+    Period:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+    MolecularPathologyFinding:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        performingInstitute:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        note:
+          type: string
+        typeOfDiagnostic:
+          type: array
+          items:
+            $ref: "#/components/schemas/Code"
+    FamilyMemberDiagnosis:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        relationship:
+          $ref: '#/components/schemas/ValueSet'
+        details:
+          type: string
+    EcogStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        effectiveDate:
+          type: string
+          format: date
+        value:
+          $ref: '#/components/schemas/ValueSet'
+    RebiopsyRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+    HistologyReevaluationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+    GeneticCounsellingRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        reason:
+          $ref: '#/components/schemas/Code'
+    StudyInclusionRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          format: uuid
+        levelOfEvidence:
+          $ref: "#/components/schemas/EvidenceLevelObject"
+        ngsReports:
+          type: array
+          items:
+            type: string
+        supportingVariants:
+          type: array
+          items:
+            type: string
+        studies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Study'
+        issuedOn:
+          type: string
+          format: date
+    Study:
+      type: object
+      properties:
+        system:
+          type: string
+          enum: [ "NCT", "DRKS", "EUDRA_CT", "OTHER", "JA_ABER_STUDIE_NICHT_BEKANNT" ]
+        value:
+          type: string
+    TherapyRecommendation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        diagnosis:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        medication:
+          type: array
+          items:
+            $ref: "#/components/schemas/Code"
+        priority:
+          type: string
+          enum: [ "1", "2", "3", "4" ]
+        levelOfEvidence:
+          $ref: "#/components/schemas/EvidenceLevelObject"
+        ngsReport:
+          type: string
+        supportingVariants:
+          type: array
+          items:
+            type: string
+    EvidenceLevelObject:
+      type: object
+      properties:
+        grading:
+          $ref: "#/components/schemas/ValueSet"
+        addendums:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValueSet"
+        publications:
+          type: array
+          items:
+            $ref: "#/components/schemas/Publication"
+    Publication:
+      type: object
+      properties:
+        pmid:
+          type: string
+        doi:
+          type: string
+    Claim:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        therapy:
+          type: string
+          format: uuid
+        isClaimViaZpmOffice:
+          type: boolean
+        stage:
+          $ref: "#/components/schemas/Code"
+    ClaimResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        claim:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        status:
+          type: string
+          enum: [ "accepted", "rejected", "unknown" ]
+        reason:
+          type: string
+          enum: [ "insufficient-evidence",
+                  "standard-therapy-not-exhausted",
+                  "other",
+                  "standard-therapy-not-exhausted-no-new-claim",
+                  "formal-reasons",
+                  "other-therapy-recommended",
+                  "inclusion-in-study",
+                  "approval-revocation",
+                  "unknown"  ]
+    CarePlan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        diagnosis:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+        description:
+          type: string
+        noTargetFinding:
+          $ref: "#/components/schemas/NoTargetFinding"
+        statusReason:
+          $ref: "#/components/schemas/Code"
+        recommendations:
+          type: array
+          items:
+            type: string
+            format: uuid
+        geneticCounsellingRequest:
+          $ref: '#/components/schemas/GeneticCounsellingRequest'
+        rebiopsyRequests:
+          type: array
+          items:
+            type: string
+            format: uuid
+        studyInclusionRequests:
+          type: array
+          items:
+            type: string
+            format: uuid
+    NoTargetFinding:
+      type: object
+      properties:
+        episodeId:
+          type: string
+          format: uuid
+        diagnosis:
+          type: string
+          format: uuid
+        issuedOn:
+          type: string
+          format: date
+    MolecularTherapy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        recordedOn:
+          type: string
+          format: date
+        basedOn:
+          type: string
+          format: uuid
+        note:
+          type: string
+        status:
+          type: string
+          enum: [ "not-done", "on-going", "stopped", "completed" ]
+        notDoneReason:
+          $ref: "#/components/schemas/ValueSet"
+        period:
+          $ref: "#/components/schemas/Period"
+        medication:
+          type: array
+          items:
+            $ref: "#/components/schemas/Code"
+        dosage:
+          type: string
+        reasonStopped:
+          $ref: "#/components/schemas/ValueSet"
+        realisation:
+          type: string
+          enum: ["complete", "partial"]
+    MolecularTherapyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        therapy:
+          type: string
+          format: uuid
+        method:
+          $ref: "#/components/schemas/Code" 
+        effectiveDate:
+          type: string
+          format: date
+        value:
+          $ref: "#/components/schemas/ValueSet"
+    NgsReport:
+      type: object
+      properties:
+        id:
+          type: string
+        episodeId:
+          type: string
+          format: uuid
+        specimen:
+          type: string
+          format: uuid
+        issueDate:
+          type: string
+          format: date
+        sequencingType:
+          type: string
+          enum: ["TSO500", "tNGS", "WES", "WGS", "Panel", "array", "exome", "genome-short-read", "genome-long-read"]
+        metadata:
+          type: array
+          items:
+            $ref: "#/components/schemas/Metadata"
+        tumorCellContent:
+          $ref: "#/components/schemas/TumorCellContent"
+        tmb:
+          $ref:  "#/components/schemas/InterpretationFindingsObject"
+        brcaness:
+          $ref:  "#/components/schemas/BRCAness"
+        msi:
+          $ref:  "#/components/schemas/MicroSatelliteInstabilities"
+        hrdScore:
+          $ref:  "#/components/schemas/InterpretationFindingsObject"
+        simpleVariants:
+          type: array
+          items:
+            $ref: "#/components/schemas/SimpleVariant"
+        copyNumberVariants:
+          type: array
+          items:
+            $ref: "#/components/schemas/CopyNumberVariant"
+        dnaFusions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DnaFusion"
+        rnaFusions:
+          type: array
+          items:
+            $ref: "#/components/schemas/RnaFusion"
+        rnaSeqs:
+          type: array
+          items:
+            $ref: "#/components/schemas/RnaSequence"
+    Metadata:
+      type: object
+      properties:
+        kitType:
+          type: string
+        kitManufacturer:
+          type: string
+        sequencer:
+          type: string
+        referenceGenome:
+          type: string
+        pipeline:
+          type: string
+    SimpleVariant:
+      type: object
+      properties:
+        id:
+          type: string
+        chromosome:
+          $ref: "#/components/schemas/ChromosomeType"
+        gene:
+          $ref: "#/components/schemas/GeneCoding"
+        startEnd:
+          $ref: "#/components/schemas/StartEndRange"
+        refAllele:
+          type: string
+        altAllele:
+          type: string
+        dnaChange:
+          $ref: "#/components/schemas/ValueSet"
+        aminoAcidChange:
+          $ref: "#/components/schemas/ValueSet"
+        readDepth:
+          type: integer
+        allelicFrequency:
+          type: number
+        cosmicId:
+          type: string
+        dbSNPId:
+          type: string
+        interpretation:
+          $ref: "#/components/schemas/ValueSet"
+    CopyNumberVariant:
+      type: object
+      properties:
+        id:
+          type: string
+        chromosome:
+          $ref: "#/components/schemas/ChromosomeType"
+        startRange:
+          $ref: "#/components/schemas/StartEndRange"
+        endRange:
+          $ref: "#/components/schemas/StartEndRange"
+        totalCopyNumber:
+          type: integer
+        relativeCopyNumber:
+          type: number
+        cnA:
+          type: number
+        cnB:
+          type: number
+        reportedAffectedGenes:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeneCoding"
+        reportedFocality:
+          type: string
+        type:
+          type: string
+          enum: ['low-level-gain', 'high-level-gain', 'loss']
+        copyNumberNeutralLoH:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeneCoding"
+    DnaFusion:
+      type: object
+      properties:
+        id:
+          type: string
+        fusionPartner5prime:
+          $ref: "#/components/schemas/DnaFusionPartner"
+        fusionPartner3prime:
+          $ref: "#/components/schemas/DnaFusionPartner"
+        reportedNumReads:
+          type: integer
+    DnaFusionPartner:
+      type: object
+      properties:
+        chromosome:
+          $ref: "#/components/schemas/ChromosomeType"
+        position:
+          type: number
+        gene:
+          $ref: "#/components/schemas/GeneCoding"
+    RnaFusion:
+      type: object
+      properties:
+        id:
+          type: string
+        fusionPartner5prime:
+          $ref: "#/components/schemas/RnaFusionPartner"
+        fusionPartner3prime:
+          $ref: "#/components/schemas/RnaFusionPartner"
+        effect:
+          type: string
+        cosmicId:
+          type: string
+        reportedNumReads:
+          type: integer
+    RnaFusionPartner:
+      type: object
+      properties:
+        gene:
+          $ref: "#/components/schemas/GeneCoding"
+        transcriptId:
+          type: string
+        exon:
+          type: string
+        position:
+          type: number
+        strand:
+          type: string
+          enum: ["+", "-"]
+    RnaSequence:
+      type: object
+      properties:
+        id:
+          type: string
+        entrezId:
+          type: string
+        ensemblId:
+          type: string
+        gene:
+          $ref: "#/components/schemas/GeneCoding"
+        transcriptId:
+          type: string
+        fragmentsPerKilobaseMillion:
+          type: number
+        fromNGS:
+          type: boolean
+        tissueCorrectedExpression:
+          type: boolean
+        rawCounts:
+          type: integer
+        librarySize:
+          type: integer
+        cohortRanking:
+          type: integer
+    GeneCoding:
+      type: object
+      properties:
+        ensemblId:
+          type: string
+        hgncId:
+          type: string
+        symbol:
+          type: string
+        name:
+          type: string
+    StartEndRange:
+      type: object
+      properties:
+        start:
+          type: number
+        end:
+          type: number
+    ChromosomeType:
+      type: string
+      enum:  ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20','chr21', 'chr22', 'chrX', 'chrY']
+    JobStatus:
+      type: string
+      enum: [ 'OPEN', 'DONE', 'INPROGRESS', 'ERROR' ]
+    TransferJob:
+      type: object
+      properties:
+        patientId:
+          type: string
+          format: uuid
+        episodeId:
+          type: string
+          format: uuid
+        status:
+          $ref: "#/components/schemas/JobStatus"
+    SessionMl:
+      type: object
+      title: SessionMl
+      description: Mainzelliste's session object
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        uri:
+          type: string
+    PatientCRUDEnums:
+      type: string
+      description: Enumeration of CRUD operations in Mainzelliste.
+      enum:
+        - addPatient
+        - readPatients
+        - editPatient
+    PatientTokenMl:
+      title: PatientTokenMl
+      description: Token object intended for Mainzelliste to request token generation.
+      type: object
+      required:
+        - type
+        - data
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: "#/components/schemas/PatientCRUDEnums"
+        allowedUses:
+          type: string
+        uri:
+          type: string
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/DataOfAddPatientTokenMl"
+            - $ref: "#/components/schemas/DataOfReadPatientTokenMl"
+            - $ref: "#/components/schemas/DataOfEditPatientTokenMl"
+    DataOfAddPatientTokenMl:
+      title: DataOfAddPatientTokenMl
+      description: Data object that should be sent with the Token of addPatient
+      type: object
+      properties:
+        idTypes:
+          type: array
+          items:
+            type: string
+        fields:
+          type: object
+        ids:
+          type: object
+          additionalProperties:
+            type: string
+        callback:
+          type: string
+        redirect:
+          type: string
+    DataOfReadPatientTokenMl:
+      title: DataOfReadPatientTokenMl
+      description: Data object that should be sent with the Token of readPatient
+      type: object
+      properties:
+        searchIds:
+          title: "Provide the ids of the patients you want to search for"
+          type: array
+          items:
+            $ref: "#/components/schemas/PatientIdMl"
+        resultFields:
+          title: "Provide the fields of the patients you want to search for"
+          type: array
+          items:
+            type: string
+        resultIds:
+          title: "Provide the ids you want to get as a result"
+          type: array
+          items:
+            type: string
+        resultAllPatientIds:
+          title: "If true, list all existing ids of the patients"
+          type: boolean
+    DataOfEditPatientTokenMl:
+      title: DataOfEditPatientTokenMl
+      description: Data object that should be sent with the Token of editPatient
+      type: object
+      properties:
+        patientId:
+          $ref: "#/components/schemas/PatientIdMl"
+        fields:
+          type: array
+          items:
+            type: string
+        ids:
+          type: array
+          items:
+            type: string
+    PatientTokenAckMl:
+      title: PatientTokenAckMl
+      description: The result obtained from the token request
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          $ref: "#/components/schemas/PatientCRUDEnums"
+        allowedUses:
+          type: string
+        remainingUses:
+          type: string
+        data:
+          type: object
+        uri:
+          type: string
+    PatientIdMl:
+      title: PatientIdMl
+      description: Mainzelliste's patientId object that includes idType and idString
+      type: object
+      required:
+        - idType
+        - idString
+      properties:
+        idType:
+          type: string
+        idString:
+          type: string
+        tentative:
+          type: boolean
+    PatientMl:
+      type: object
+      title: PatientMl
+      description: Mainzelliste's patient object that includes patient fields and IDs.
+      required:
+        - "fields"
+        - "ids"
+      properties:
+        fields:
+          description: IDAT fields as key-value pairs (field names as keys).
+          type: object
+          additionalProperties:
+            type: string
+        ids:
+          description: Array of patient IDs.
+          type: array
+          items:
+            $ref: "#/components/schemas/PatientIdMl"
+    ReadPatientsAckMl:
+      title: ReadPatientsAckMl
+      description: A List of Patient objects retrieved from Mainzelliste through readPatient requests
+      type: array
+      items:
+        $ref: "#/components/schemas/PatientMl"
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        patientId:
+          type: string
+          format: uuid
+        comment:
+          type: string
+        highlighted:
+          type: boolean
+        author:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        updatedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+        deletedAt:
+          type: string
+          format: date-time
+          example: '2020-05-27T17:32:28Z'
+      required:
+        - id
+    AddPatientMl:
+      type: object
+      title: AddPatientMl
+      description: Patient object that should be sent with addPatient requests
+      properties:
+        idtypes:
+          description: List of strings, Pseudonym types to be generated and returned.
+            If only one ID type is configured for the instance, this specification can be omitted.
+          type: array
+          items:
+            type: string
+        fields:
+          description: Object with predefined fields (field names as keys). This allows input fields to be pre-filled server-side
+          type: object
+          additionalProperties:
+            type: string
+        ids:
+          description: Object with predefined IDs (ID types as keys). This allows externally generated IDs to be defined server-side
+          type: object
+        sureness:
+          type: boolean
+    GenderType:
+      type: string
+      enum: [ male, female, other, unknown ]
+    CredentialRepresentation:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        userLabel:
+          type: string
+        createdDate:
+          type: number
+        secretData:
+          type: string
+        credentialData:
+          type: string
+        priority:
+          type: integer
+        value:
+          type: string
+        temporary:
+          type: boolean
+    FederatedIdentityRepresentation:
+      type: object
+      properties:
+        identityProvider:
+          type: string
+        userId:
+          type: string
+        userName:
+          type: string
+    UserConsentRepresentation:
+      type: object
+      properties:
+        clientId:
+          type: string
+        grantedClientScopes:
+          type: array
+          items:
+            type: string
+        createdDate:
+          type: number
+        lastUpdatedDate:
+          type: number
+    UserRepresentation:
+      type: object
+      properties:
+        self:
+          type: string
+        id:
+          type: string
+        origin:
+          type: string
+        createdTimestamp:
+          type: number
+        username:
+          type: string
+        enabled:
+          type: boolean
+        totp:
+          type: boolean
+        emailVerified:
+          type: boolean
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        federationLink:
+          type: string
+        serviceAccountClientId:
+          type: string
+        attributes:
+          properties:
+            map:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+        credentials:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialRepresentation'
+        disableableCredentialTypes:
+          type: array
+          items:
+            type: string
+        requiredActions:
+          type: array
+          items:
+            type: string
+        federatedIdentities:
+          type: array
+          items:
+            $ref: '#/components/schemas/FederatedIdentityRepresentation'
+        realmRoles:
+          type: array
+          items:
+            type: string
+        clientRoles:
+          properties:
+            map:
+              type: object
+              additionalProperties:
+                type: array
+                items:
+                  type: string
+        clientConsents:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserConsentRepresentation'
+        notBefore:
+          type: integer
+    UserList:
+      type: array
+      items:
+        $ref: '#/components/schemas/UserRepresentation'
+    HealthInsurance:
+      type: object
+      properties:
+        IK:
+          type: integer
+        Datum:
+          type: string
+        Antragsschluessel:
+          type: string
+        Anrede:
+          type: string
+        Namenszeile_1:
+          type: string
+        Namenszeile_2:
+          type: string
+        Namenszeile_3:
+          type: string
+        Namenszeile_4:
+          type: string
+        H_Strasse:
+          type: string
+        H_LKZ:
+          type: string
+        H_PLZ:
+          type: string
+        H_Ort:
+          type: string
+        P_LKZ:
+          type: string
+        P_PLZ:
+          type: string
+        P_Ort:
+          type: string
+        Postfach:
+          type: string
+        TelVorwahl:
+          type: string
+        TelRufNummer:
+          type: string
+        FaxVorwahl:
+          type: string
+        FaxNummer:
+          type: string
+    KcReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fileName:
+          type: string
+        episodeId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+    BinaryFile:
+      type: string
+      format: binary

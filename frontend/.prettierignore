@@ -1,0 +1,4 @@
+**/*.html
+**/*.json
+gen/** 
+config/**

@@ -1,0 +1,13 @@
+package de.uke.iam.mtb.control.models.enums.coredata;
+
+public enum ClaimResponseReason {
+  INSUFFICIENT_EVIDENCE,
+  STANDARD_THERAPY_NOT_EXHAUSTED, // New claim required
+  OTHER,
+  STANDARD_THERAPY_NOT_EXHAUSTED_NO_NEW_CLAIM,
+  FORMAL_REASONS,
+  OTHER_THERAPY_RECOMMENDED,
+  INCLUSION_IN_STUDY,
+  APPROVAL_REVOCATION,
+  UNKNOWN
+}
